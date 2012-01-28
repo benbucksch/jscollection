@@ -2,7 +2,6 @@ const _import = require("collection/collection");
 for (let symbolName in _import)
   this[symbolName] = _import[symbolName];
 
-
 exports.array = function(test)
 {
   var a = new ArrayColl();
@@ -18,11 +17,17 @@ exports.array = function(test)
   test.assertEqual(a.contents().length, 3);
 
   // KeyValue of ArrayColl
-  test.assertEqual(a.get(1), "a");
-  test.assertEqual(a.get(3), "c");
-  a.set(3, "c2");
+  test.assertEqual(a.get(0), "a");
+  test.assertEqual(a.get(2), "c");
+  a.set(2, "c2");
   test.assertEqual(a.length, 3);
   test.assertEqual(a.contents().length, 3);
+  a.set(3, "d2");
+  test.assertEqual(a.length, 4);
+  test.assertEqual(a.contents().length, 4);
+  a.set(10, "e");
+  test.assertEqual(a.length, 11);
+  test.assertEqual(a.contents().length, 11);
   test.done();
 }
 
@@ -83,8 +88,8 @@ exports.subtract = function(test)
   b.add("e");
   b.add("f");
   var sub = subtractColl(a, b);
-  test.assertEqual(sub.length, 5);
-  test.assertEqual(sub.contents().length, 5);
+  test.assertEqual(sub.length, 2);
+  test.assertEqual(sub.contents().length, 2);
 
   sub.registerObserver({
     added : function(item, coll) {
@@ -92,7 +97,7 @@ exports.subtract = function(test)
     },
     removed : function(item, coll) {
       test.pass("observer removed called");
-      test.assertEqual(coll, a);
+      test.assertEqual(coll, sub);
       test.assertEqual(item, el);
       test.done();
     }
@@ -113,17 +118,17 @@ exports.and = function(test)
   b.add(el);
   b.add("e");
   b.add("f");
-  var and = subtractColl(a, b);
+  var and = andColl(a, b);
   test.assertEqual(and.length, 1);
   test.assertEqual(and.contents().length, 1);
   for each (let item in and)
     test.assertEqual(item, el);
 
-  sub.registerObserver({
+  and.registerObserver({
     added : function(item, coll) {
     },
     removed : function(item, coll) {
-      test.assertEqual(coll, sub);
+      test.assertEqual(coll, and);
       test.assertEqual(item, el);
       test.done();
     }
