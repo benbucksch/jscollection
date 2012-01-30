@@ -1,6 +1,6 @@
 Author: Ben Bucksch
 
-= Collections =
+= JavaScript Collections =
 
 This describes a future module that will have a coherent set of collection/list classes, with a common API, similar to java.util.Collection.
 
@@ -24,10 +24,11 @@ This describes a future module that will have a coherent set of collection/list 
 ** OrderedMap
 ** Others can live in third-party modules, but if they adhere to the common APi, they would fit in nicely
 * UI
+** (Not part of this module, but a use of it)
 ** Listbox, tree node childred etc. all could accept such lists
 ** E.g. listbox.showList(allItems)
-** The UI then updates automatically based on changes of the underlying list, and the programmer doesn't have to think about it.
-** The API of the UI then wouldn't need "add/remoteItem" functions.
+** Dynamically adapting UI without extra work: Thanks to observers, the UI updates automatically based on changes of the underlying list.
+** The API of the UI then wouldn't need "add/remoteItem" functions itself.
 * Other classes
 ** Pretty much anything that takes a list in Jetpack could be using this API, at least optionally.
 
@@ -52,6 +53,8 @@ Of course, if you wanted to show both serverItems and localItems in the UI, you 
 This means that you don't need additional wiring to make the UI update after the user (or server) did add/remove item actions, you only need to update the underlying lists.
 
 = API =
+
+The classes are standing alone, they do not change JS Array or Object types.
 
 (extract, full docs will be in module)
 
@@ -175,6 +178,7 @@ add, subtract, and, xor (compare [http://en.wikipedia.org/wiki/Set_theory Set th
 
 All operators observe the original collections they are constructed from, and adapt the result based on changes, and notify any observers that are registered on the operator result collection.
 
+   * +
    * Returns a collection that contains all values from coll1 and coll2.
    * If the same item is in both coll1 and coll2, it will be added only once.
    *
@@ -185,16 +189,21 @@ All operators observe the original collections they are constructed from, and ad
    * @returns {Collection}
    *     Does not preserve order.
   function addColl(coll1, coll2)
+  TODO rename? mergeColl
 
+   * +
    * Returns a collection that contains all values from coll1 and coll2.
    * If the same item is in both coll1 and coll2, it will be added twice.
+   * The result is simply coll2 is simply appended to coll1.
    *
    * @param coll1 {Collection}
    * @param coll2 {Collection}
    * @returns {Collection}
    *     Preserves order
   function addCollWithDups(coll1, coll2)
+  TODO rename? concatColl or appendColl
 
+   * -
    * Returns a collection that contains all values from collBase,
    * apart from those in collSubtract.
    *
@@ -206,6 +215,7 @@ All operators observe the original collections they are constructed from, and ad
    *     Preserves order of collBase.
   function subtractColl(collBase, collSubtract)
 
+   * &
    * Returns a collection that contains all values that are contained
    * in *both* coll1 and coll1.
    *
@@ -216,6 +226,7 @@ All operators observe the original collections they are constructed from, and ad
    * @returns {Collection}
    *     Does not preserve order.
   function andColl(coll1, coll2)
+  TODO rename? inCommonColl
 
    * Returns a collection that contains all values that are contained
    * only in coll1 or coll2, but *not in both*.
@@ -241,6 +252,7 @@ All operators observe the original collections they are constructed from, and ad
 * Ben Bucksch will provide API, base implementation, Array, Set, Map, and operators
 * M.-A. Darche will provide OrderedMap and possibly OrderedSet
 * Others are welcome to make UI elements support these collections.
+* The code will be documented using the [http://code.google.com/intl/en/closure/compiler/docs/js-for-compiler.html JSDoc conventions].
 
 = Feedback needed =
 
@@ -253,3 +265,12 @@ Options:
 
 * specify id and sortBy properties or -- more convenient
 * specify isSameObject() and isGreaterThan() functions - more flexible
+
+== Naming ==
+The [https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Set Set] object is available in future versions of Firefox and thus this name should not be used.
+
+== Compatibiltiy ==
+* What should be the [http://robertnyman.com/javascript/ JavaScript version and features] this module relies on? Relying on JavaScript 1.6 would make it possible to use the JavaScript Collections with Google Chrome V8 JavaScript engine as well and thus the JavaScript Collections module would be useful for more people for more context, and a developer using the JavaScript Collections for Jetpack could use it as-is on many other web projects. That would ease many developers' life.
+
+== weak references ==
+* Leveraging [https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/WeakMap WeakMap] (available since Firefox 6 and should be available in Google Chrome 18) should be considered.
