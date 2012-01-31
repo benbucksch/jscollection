@@ -52,7 +52,7 @@ exports.observer = function(test)
   a.remove(el);
 }
 
-exports.add = function(test)
+exports.merge = function(test)
 {
   var a = new ArrayColl();
   var b = new ArrayColl();
@@ -62,11 +62,11 @@ exports.add = function(test)
   b.add("d");
   b.add("e");
   b.add("f");
-  var add = addColl(a, b);
-  test.assertEqual(add.length, 6);
-  test.assertEqual(add.contents().length, 6);
+  var merged = mergeColl(a, b);
+  test.assertEqual(merged.length, 6);
+  test.assertEqual(merged.contents().length, 6);
 
-  add.registerObserver({
+  merged.registerObserver({
     added : function(item, coll) {
       test.done();
     },
@@ -107,7 +107,7 @@ exports.subtract = function(test)
   b.add(el); // calls removed()
 }
 
-exports.and = function(test)
+exports.common = function(test)
 {
   var a = new ArrayColl();
   var b = new ArrayColl();
@@ -118,17 +118,17 @@ exports.and = function(test)
   b.add(el);
   b.add("e");
   b.add("f");
-  var and = andColl(a, b);
-  test.assertEqual(and.length, 1);
-  test.assertEqual(and.contents().length, 1);
-  for each (let item in and)
+  var common = inCommonColl(a, b);
+  test.assertEqual(common.length, 1);
+  test.assertEqual(common.contents().length, 1);
+  for each (let item in common)
     test.assertEqual(item, el);
 
-  and.registerObserver({
+  common.registerObserver({
     added : function(item, coll) {
     },
     removed : function(item, coll) {
-      test.assertEqual(coll, and);
+      test.assertEqual(coll, common);
       test.assertEqual(item, el);
       test.done();
     }
