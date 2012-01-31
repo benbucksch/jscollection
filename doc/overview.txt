@@ -178,7 +178,7 @@ add, subtract, and, xor (compare [http://en.wikipedia.org/wiki/Set_theory Set th
 
 All operators observe the original collections they are constructed from, and adapt the result based on changes, and notify any observers that are registered on the operator result collection.
 
-   * +
+   * operator +
    * Returns a collection that contains all values from coll1 and coll2.
    * If the same item is in both coll1 and coll2, it will be added only once.
    *
@@ -188,10 +188,9 @@ All operators observe the original collections they are constructed from, and ad
    * @param coll2 {Collection}
    * @returns {Collection}
    *     Does not preserve order.
-  function addColl(coll1, coll2)
-  TODO rename? mergeColl
+  function mergeColl(coll1, coll2)
 
-   * +
+   * operator +
    * Returns a collection that contains all values from coll1 and coll2.
    * If the same item is in both coll1 and coll2, it will be added twice.
    * The result is simply coll2 is simply appended to coll1.
@@ -200,10 +199,9 @@ All operators observe the original collections they are constructed from, and ad
    * @param coll2 {Collection}
    * @returns {Collection}
    *     Preserves order
-  function addCollWithDups(coll1, coll2)
-  TODO rename? concatColl or appendColl
+  function concatColl(coll1, coll2)
 
-   * -
+   * operator -
    * Returns a collection that contains all values from collBase,
    * apart from those in collSubtract.
    *
@@ -215,7 +213,7 @@ All operators observe the original collections they are constructed from, and ad
    *     Preserves order of collBase.
   function subtractColl(collBase, collSubtract)
 
-   * &
+   * operator &
    * Returns a collection that contains all values that are contained
    * in *both* coll1 and coll1.
    *
@@ -225,9 +223,9 @@ All operators observe the original collections they are constructed from, and ad
    * @param coll2 {Collection}
    * @returns {Collection}
    *     Does not preserve order.
-  function andColl(coll1, coll2)
-  TODO rename? inCommonColl
+  function inCommonColl(coll1, coll2)
 
+   * operator xor
    * Returns a collection that contains all values that are contained
    * only in coll1 or coll2, but *not in both*.
    *
@@ -237,7 +235,7 @@ All operators observe the original collections they are constructed from, and ad
    * @param coll2 {Collection}
    * @returns {Collection}
    *     Does not preserve order.
-  function xorColl(coll1, coll2)
+  function notInCommonColl(coll1, coll2)
 
    * Returns a new collection that is sorted based on the |sortFunc|.
    *
