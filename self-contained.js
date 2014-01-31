@@ -124,7 +124,7 @@ Collection.prototype = {
    * efficient implementation. But take care that
    * a remove() during the iteration doesn't confuse it.
    */
-  __iterator__ : function() {
+  iterator : function() {
     var items = this.contents();
     for (let i = 0; i < items.length; i++)
       yield items[i];
@@ -839,7 +839,7 @@ Map.prototype = {
     return obj;
   },
 
-  __iterator__ : function() {
+  iterator : function() {
     for each (let value in this._obj)
       yield value[i];
   },
