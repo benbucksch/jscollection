@@ -27,6 +27,13 @@ Collection.prototype = {
   },
 
   /**
+   * Compat with JS |Array|
+   */
+  push : function(item) {
+    this.add(item);
+  },
+
+  /**
    * Removes one item from the list
    * @param item {Object} any JS object
    */
@@ -148,7 +155,8 @@ Collection.prototype = {
    */
   unregisterObserver : function(observer) {
     assert(observer);
-    assert(typeof(observer.added) == "function",
+    assert(typeof(observer.added) == "function" &&
+           typeof(observer.removed) == "function",
         "must implement CollectionObserver");
     arrayRemove(this._observers, observer, true);
   },
@@ -730,7 +738,7 @@ Set.prototype = {
   _addWithoutObserver : function(item) {
     if ( !item && item !== 0)
       throw "null objects are not allowed";
-    if (arrayContains(item))
+    if (arrayContains(this._array, item))
       return;
     this._array.push(item);
   },
