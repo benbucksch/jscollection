@@ -7,7 +7,7 @@
  ****************************/
 
 // util functions needed:
-// extend(), assert(), arrayRemove(), arrayContains(), sanitize.string()
+// extend(), assert()
 
 /**
  * This defines the common base API for all collections and operators
@@ -51,8 +51,9 @@ Collection.prototype = {
    * @param coll {Collection or JS Array}
    */
   addAll : function(coll) {
-    for each (let item in coll)
+    coll.forEach(function(item) {
       this.add(item);
+    });
   },
 
   /**
@@ -61,8 +62,9 @@ Collection.prototype = {
    * @param coll {Collection or JS Array}
    */
   removeAll : function(coll) {
-    for each (let item in coll)
+    coll.forEach(function(item) {
       this.remove(item);
+    });
   },
 
   /**
@@ -93,7 +95,7 @@ Collection.prototype = {
    * @returns {Boolean}
    */
   contains : function(item) {
-    throw "implement";
+    return this.contents.indexOf(item) != -1;
   },
 
   /**
@@ -114,21 +116,63 @@ Collection.prototype = {
     throw "implement";
   },
 
+  forEach : function(callback) {
+    this.contents.forEach(callback);
+  },
+
+  /**
+   * @param filterCallback {Function(item)}
+   * @returns {Array of items} where |filterCallback| returned |true|
+   */
+  filter : function(filterCallback) {
+    var result = [];
+    this.forEach(function(item) {
+      if (filterCallback(item)) {
+        result.push(item);
+      }
+    });
+    return result;
+  },
+
+  /**
+   * @returns first matching item or |undefined|
+   */
+  find : function(filterCallback) {
+    var result = undefined;
+    this.forEach(function(item) {
+      if ( !result && filterCallback(item)) {
+        result = item;
+      }
+    });
+    return result;
+  },
+
+  map : function(mapCallback) {
+    var result = [];
+    this.forEach(function(item) {
+      result.push(mapCallback(item));
+    });
+    return result;
+  },
+
   /**
    * Provides an iterator, i.e. allows to write:
    * var coll = new Set();
-   * for each (let item in coll)
+   * for each (var item in coll)
    *   debug(item);
    *
    * Subclasses may override this with a more
    * efficient implementation. But take care that
    * a remove() during the iteration doesn't confuse it.
-   */
+   *
   iterator : function() {
     var items = this.contents();
-    for (let i = 0; i < items.length; i++)
+    for (var i = 0; i < items.length; i++) {
       yield items[i];
+    }
   },
+  */
+
 
 
   // Observer
@@ -144,7 +188,7 @@ Collection.prototype = {
     assert(observer);
     assert(typeof(observer.added) == "function",
         "must implement CollectionObserver");
-    if (arrayContains(this._observers, observer))
+    if (this._observers.indexOf(observer) != -1) // already contains it
       return;
     this._observers.push(observer);
   },
@@ -158,27 +202,27 @@ Collection.prototype = {
     assert(typeof(observer.added) == "function" &&
            typeof(observer.removed) == "function",
         "must implement CollectionObserver");
-    arrayRemove(this._observers, observer, true);
+    _coll_arrayRemove(this._observers, observer, true);
   },
 
   _notifyAdded : function(item) {
-    for each (let observer in this._observers) {
+    this._observers.forEach(function(observer) {
       try {
         observer.added(item, this);
       } catch (e) {
         console.error(e);
       }
-    }
+    });
   },
 
   _notifyRemoved : function(item) {
-    for each (let observer in this._observers) {
+    this._observers.forEach(function(observer) {
       try {
         observer.removed(item, this);
       } catch (e) {
         console.error(e);
       }
-    }
+    });
   },
 }
 
@@ -384,10 +428,12 @@ function initAddition(self, coll1, coll2) {
   self._coll2 = coll2;
 
   // add initial contents
-  for each (let item in coll1)
+  coll1.forEach(function(item) {
     self.add(item);
-  for each (let item in coll2)
+  });
+  coll2.forEach(function(item) {
     self.add(item);
+  });
 
   coll1.registerObserver(self);
   coll2.registerObserver(self);
@@ -481,10 +527,10 @@ function SubtractCollection(collBase, collSubtract) {
 SubtractCollection.prototype = {
   _reconstruct : function() {
     var sub = this._collSubtract;
-    for each (let item in this._collBase) {
+    this._collBase.forEach(function(item) {
       if ( !sub.contains(item))
         this._addWithoutObserver(item);
-    }
+    });
   },
 }
 extend(SubtractCollection, ArrayColl);
@@ -499,10 +545,10 @@ function IntersectionCollection(coll1, coll2) {
   this._coll2 = coll2;
 
   // add initial contents
-  for each (let item in coll1) {
+  coll1.forEach(function(item) {
     if (coll2.contains(item))
       this._addWithoutObserver(item);
-  }
+  });
 
   coll1.registerObserver(this);
   coll2.registerObserver(this);
@@ -571,6 +617,9 @@ DelegateCollection.prototype = {
   contents : function() {
     return this._base.contents();
   },
+  forEach : function(callback) {
+    return this._base.forEach(callback);
+  },
   registerObserver : function(observer) {
     this._base.registerObserver(observer);
   },
@@ -585,6 +634,7 @@ extend(DelegateCollection, Collection);
  * Collection implementations
  ******************************************************/
 
+
 /**
  * A |Collection| based on a JS Array.
  * Properties:
@@ -592,10 +642,15 @@ extend(DelegateCollection, Collection);
  * - indexed: every item has an integer key
  * - can hold the same item several times
  * - fast
+ *
+ * @param copyFromArray {Array} init the collection with these values
  */
-function ArrayColl() {
+function ArrayColl(copyFromArray) {
   KeyValueCollection.call(this);
   this._array = [];
+  if (copyFromArray && copyFromArray.length) {
+    this.addAll(copyFromArray);
+  }
 }
 ArrayColl.prototype = {
 
@@ -621,12 +676,12 @@ ArrayColl.prototype = {
    * to remove them all.
    */
   remove : function(item) {
-    arrayRemove(this._array, item, false);
+    _coll_arrayRemove(this._array, item, false);
     this._notifyRemoved(item, this);
   },
 
   _removeWithoutObserver : function(item) {
-    arrayRemove(this._array, item, false);
+    _coll_arrayRemove(this._array, item, false);
   },
 
   /**
@@ -643,8 +698,9 @@ ArrayColl.prototype = {
   },
 
   clear : function() {
-    for each (let item in this._array)
+    this._array.forEach(function(item) {
       this._notifyRemoved(item, this);
+    });
     this._array = [];
   },
 
@@ -653,13 +709,25 @@ ArrayColl.prototype = {
   },
 
   contains : function(item) {
-    return arrayContains(this._array, item);
+    return this._array.indexOf(item) != -1;
   },
 
   // containsKey : defined in KeyValueCollection
 
   contents : function() {
     return this._array.slice(); // return copy of array
+  },
+
+  forEach : function(callback) {
+    return this._array.forEach(callback);
+  },
+
+  filter : function(callback) {
+    return this._array.filter(callback);
+  },
+
+  map : function(callback) {
+    return this._array.map(callback);
   },
 
   /**
@@ -700,7 +768,7 @@ ArrayColl.prototype = {
   },
 
   getKeyForValue : function(value) {
-    for (let i in this._array) {
+    for (var i in this._array) {
       if (this._array[i] == value)
         return i;
     }
@@ -710,6 +778,35 @@ ArrayColl.prototype = {
 }
 extend(ArrayColl, KeyValueCollection);
 
+
+
+/**
+ * Removes |element| from |array|.
+ * @param array {Array} to be modified. Will be modified in-place.
+ * @param element {Object} If |array| has a member that equals |element|,
+ *    the array member will be removed.
+ * @param all {boolean}
+ *     if true: remove all occurences of |element| in |array.
+ *     if false: remove only the first hit
+ * @returns {Integer} number of hits removed (0, 1 or more)
+ */
+function _coll_arrayRemove(array, element, all)
+{
+  var found = 0;
+  var pos = 0;
+  while ((pos = array.indexOf(element, pos)) != -1)
+  {
+    array.splice(pos, 1);
+    found++
+    if ( ! all)
+      return found;
+  }
+  return found;
+}
+
+function _coll_sanitizeString(str) {
+  return String(unchecked);
+};
 
 
 /**
@@ -738,23 +835,24 @@ Set.prototype = {
   _addWithoutObserver : function(item) {
     if ( !item && item !== 0)
       throw "null objects are not allowed";
-    if (arrayContains(this._array, item))
+    if (this.contains(item))
       return;
     this._array.push(item);
   },
 
   remove : function(item) {
-    arrayRemove(this._array, item, true);
+    _coll_arrayRemove(this._array, item, true);
     this._notifyRemoved(item, this);
   },
 
   _removeWithoutObserver : function(item) {
-    arrayRemove(this._array, item, true);
+    _coll_arrayRemove(this._array, item, true);
   },
 
   clear : function() {
-    for each (let item in this._array)
+    this._array.forEach(function(item) {
       this._notifyRemoved(item, this);
+    });
     this._array = [];
   },
 
@@ -763,11 +861,23 @@ Set.prototype = {
   },
 
   contains : function(item) {
-    return arrayContains(this._array, item);
+    return this._array.indexOf(item) != -1;
   },
 
   contents : function() {
     return this._array.slice(); // return copy of array
+  },
+
+  forEach : function(callback) {
+    return this._array.forEach(callback);
+  },
+
+  filter : function(callback) {
+    return this._array.filter(callback);
+  },
+
+  map : function(callback) {
+    return this._array.map(callback);
   },
 }
 extend(Set, Collection);
@@ -806,43 +916,58 @@ Map.prototype = {
   },
 
   clear : function() {
-    for each (let value in this._obj)
+    for (var prop in this._obj) {
+      var value = this._obj[prop];
       this._notifyRemoved(value, this);
+    }
     this._obj = {};
   },
 
   get length() {
     var length = 0;
-    for each (let value in this._obj)
+    for (var prop in this._obj) {
       length++;
+    }
     return length;
   },
 
   contents : function() {
     var array = [];
-    for each (let value in this._obj)
+    for (var prop in this._obj) {
+      var value = this._obj[prop];
       array.push(value);
+    }
     return array;
   },
 
   contentKeys : function() {
     var array = [];
-    for (let key in this._obj)
+    for (var key in this._obj)
       array.push(key);
     return array;
   },
 
   contentKeyValues : function() {
     var obj = {};
-    for (let key in this._obj)
+    for (var key in this._obj)
       obj[key] = value
     return obj;
   },
 
-  iterator : function() {
-    for each (let value in this._obj)
-      yield value[i];
+  forEach : function(callback) {
+    for (var prop in this._obj) {
+      var value = this._obj[prop];
+      callback(value);
+    }
   },
+
+  /*
+  iterator : function() {
+    for (var prop in this._obj) {
+      var value = this._obj[prop];
+      yield value[i];
+    }
+  },*/
 
   contains : function(value) {
     return this.getKeyForValue(value) != undefined;
@@ -856,7 +981,7 @@ Map.prototype = {
    * @param key {String}
    */
   set : function(key, value) {
-    key = sanitize.string(key);
+    key = _coll_sanitizeString(key);
     var oldValue = this._obj[key];
     this._obj[key] = value;
     if (oldValue !== undefined)
@@ -872,12 +997,12 @@ Map.prototype = {
    * @param key {String}
    */
   get : function(key) {
-    key = sanitize.string(key);
+    key = _coll_sanitizeString(key);
     return this._obj[key];
   },
 
   removeKey : function(key) {
-    key = sanitize.string(key);
+    key = _coll_sanitizeString(key);
     var value = this._obj[key];
     if (value == undefined)
       return;
@@ -886,7 +1011,7 @@ Map.prototype = {
   },
 
   getKeyForValue : function(value) {
-    for (let key in this._obj) {
+    for (var key in this._obj) {
       if (this._obj[key] == value)
         return key;
     }
@@ -895,3 +1020,103 @@ Map.prototype = {
 
 }
 extend(Map, KeyValueCollection);
+
+/**
+ * A |Collection| which wraps a DOMNodeList.
+ */
+function DOMList(domlist) {
+  Collection.call(this);
+  assert(typeof(domlist.item) == "function", "Not a DOMNodeList");
+  this._domlist = domlist;
+}
+DOMList.prototype = {
+  /**
+   * This doesn't make much sense for Map.
+   * Please use set() instead.
+   */
+  add : function(value) {
+    throw "immutable";
+  },
+
+  remove : function(value) {
+    throw "immutable";
+  },
+
+  clear : function() {
+    this.contents.forEach(function(item) {
+      this._notifyRemoved(item, this);
+    });
+    this._domlist = {};
+  },
+
+  get length() {
+    return this._domlist.length;
+  },
+
+  contents : function() {
+    var array = [];
+    for (var i = 0, l = this._domlist.length; i < l; i++) {
+      var item = this._domlist.item(i);
+      array.push(item);
+    }
+    return array;
+  },
+
+  forEach : function(callback) {
+    for (var i = 0, l = this._domlist.length; i < l; i++) {
+      var item = this._domlist.item(i);
+      callback(item);
+    }
+  },
+
+  contains : function(value) {
+    return this.getKeyForValue(value) != undefined;
+  },
+
+  // containsKey : defined in KeyValueCollection
+
+  /**
+   * Sets the value for |key|
+   *
+   * @param key {String}
+   */
+  set : function(key, value) {
+    key = _coll_sanitizeString(key);
+    var oldValue = this._obj[key];
+    this._obj[key] = value;
+    if (oldValue !== undefined)
+      this._notifyRemoved(oldValue, this);
+    if (value !== undefined)
+      this._notifyAdded(value, this);
+  },
+
+  /**
+   * Gets the value for |key|
+   *
+   * If the key doesn't exist, returns null.
+   * @param key {String}
+   */
+  get : function(key) {
+    key = _coll_sanitizeString(key);
+    return this._obj[key];
+  },
+
+  removeKey : function(key) {
+    key = _coll_sanitizeString(key);
+    var value = this._obj[key];
+    if (value == undefined)
+      return;
+    delete this._obj[key];
+    this._notifyRemoved(value, this);
+  },
+
+  getKeyForValue : function(value) {
+    for (var key in this._obj) {
+      if (this._obj[key] == value)
+        return key;
+    }
+    return undefined;
+  },
+
+}
+extend(DOMList, Collection);
