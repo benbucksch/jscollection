@@ -53,7 +53,7 @@ Collection.prototype = {
   addAll : function(coll) {
     coll.forEach(function(item) {
       this.add(item);
-    });
+    }, this);
   },
 
   /**
@@ -64,7 +64,7 @@ Collection.prototype = {
   removeAll : function(coll) {
     coll.forEach(function(item) {
       this.remove(item);
-    });
+    }, this);
   },
 
   /**
@@ -116,43 +116,43 @@ Collection.prototype = {
     throw "implement";
   },
 
-  forEach : function(callback) {
-    this.contents.forEach(callback);
+  forEach : function(callback, self) {
+    this.contents.forEach(callback, self);
   },
 
   /**
    * @param filterCallback {Function(item)}
    * @returns {Array of items} where |filterCallback| returned |true|
    */
-  filter : function(filterCallback) {
+  filter : function(filterCallback, self) {
     var result = [];
     this.forEach(function(item) {
-      if (filterCallback(item)) {
+      if (filterCallback.call(self, item)) {
         result.push(item);
       }
-    });
-    return result;
+    }, this);
+    return new ArrayColl(result);
   },
 
   /**
    * @returns first matching item or |undefined|
    */
-  find : function(filterCallback) {
+  find : function(filterCallback, self) {
     var result = undefined;
     this.forEach(function(item) {
-      if ( !result && filterCallback(item)) {
+      if ( !result && filterCallback.call(self, item)) {
         result = item;
       }
-    });
+    }, this);
     return result;
   },
 
-  map : function(mapCallback) {
+  map : function(mapCallback, self) {
     var result = [];
     this.forEach(function(item) {
-      result.push(mapCallback(item));
-    });
-    return result;
+      result.push(mapCallback.call(self, item));
+    }, this);
+    return new ArrayColl(result);
   },
 
   /**
@@ -212,7 +212,7 @@ Collection.prototype = {
       } catch (e) {
         console.error(e);
       }
-    });
+    }, this);
   },
 
   _notifyRemoved : function(item) {
@@ -222,7 +222,7 @@ Collection.prototype = {
       } catch (e) {
         console.error(e);
       }
-    });
+    }, this);
   },
 }
 
@@ -430,10 +430,10 @@ function initAddition(self, coll1, coll2) {
   // add initial contents
   coll1.forEach(function(item) {
     self.add(item);
-  });
+  }, self);
   coll2.forEach(function(item) {
     self.add(item);
-  });
+  }, self);
 
   coll1.registerObserver(self);
   coll2.registerObserver(self);
@@ -528,9 +528,10 @@ SubtractCollection.prototype = {
   _reconstruct : function() {
     var sub = this._collSubtract;
     this._collBase.forEach(function(item) {
-      if ( !sub.contains(item))
+      if ( !sub.contains(item)) {
         this._addWithoutObserver(item);
-    });
+      }
+    }, this);
   },
 }
 extend(SubtractCollection, ArrayColl);
@@ -548,7 +549,7 @@ function IntersectionCollection(coll1, coll2) {
   coll1.forEach(function(item) {
     if (coll2.contains(item))
       this._addWithoutObserver(item);
-  });
+  }, this);
 
   coll1.registerObserver(this);
   coll2.registerObserver(this);
@@ -617,8 +618,8 @@ DelegateCollection.prototype = {
   contents : function() {
     return this._base.contents();
   },
-  forEach : function(callback) {
-    return this._base.forEach(callback);
+  forEach : function(callback, self) {
+    this._base.forEach(callback, self);
   },
   registerObserver : function(observer) {
     this._base.registerObserver(observer);
@@ -700,7 +701,7 @@ ArrayColl.prototype = {
   clear : function() {
     this._array.forEach(function(item) {
       this._notifyRemoved(item, this);
-    });
+    }, this);
     this._array = [];
   },
 
@@ -718,16 +719,16 @@ ArrayColl.prototype = {
     return this._array.slice(); // return copy of array
   },
 
-  forEach : function(callback) {
-    return this._array.forEach(callback);
+  forEach : function(callback, self) {
+    this._array.forEach(callback, self);
   },
 
-  filter : function(callback) {
-    return this._array.filter(callback);
+  filter : function(callback, self) {
+    return new ArrayColl(this._array.filter(callback, self));
   },
 
-  map : function(callback) {
-    return this._array.map(callback);
+  map : function(callback, self) {
+    return new ArrayColl(this._array.map(callback, self));
   },
 
   /**
@@ -852,7 +853,7 @@ Set.prototype = {
   clear : function() {
     this._array.forEach(function(item) {
       this._notifyRemoved(item, this);
-    });
+    }, this);
     this._array = [];
   },
 
@@ -868,16 +869,16 @@ Set.prototype = {
     return this._array.slice(); // return copy of array
   },
 
-  forEach : function(callback) {
-    return this._array.forEach(callback);
+  forEach : function(callback, self) {
+    this._array.forEach(callback, self);
   },
 
-  filter : function(callback) {
-    return this._array.filter(callback);
+  filter : function(callback, self) {
+    return new ArrayColl(this._array.filter(callback, self));
   },
 
-  map : function(callback) {
-    return this._array.map(callback);
+  map : function(callback, self) {
+    return new ArrayColl(this._array.map(callback, self));
   },
 }
 extend(Set, Collection);
@@ -954,10 +955,10 @@ Map.prototype = {
     return obj;
   },
 
-  forEach : function(callback) {
+  forEach : function(callback, self) {
     for (var prop in this._obj) {
       var value = this._obj[prop];
-      callback(value);
+      callback.call(self, value);
     }
   },
 
@@ -1045,7 +1046,7 @@ DOMList.prototype = {
   clear : function() {
     this.contents.forEach(function(item) {
       this._notifyRemoved(item, this);
-    });
+    }, this);
     this._domlist = {};
   },
 
@@ -1062,10 +1063,10 @@ DOMList.prototype = {
     return array;
   },
 
-  forEach : function(callback) {
+  forEach : function(callback, self) {
     for (var i = 0, l = this._domlist.length; i < l; i++) {
       var item = this._domlist.item(i);
-      callback(item);
+      callback.call(self, item);
     }
   },
 
