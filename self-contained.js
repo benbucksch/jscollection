@@ -1022,19 +1022,20 @@ Map.prototype = {
 }
 extend(Map, KeyValueCollection);
 
+
 /**
  * A |Collection| which wraps a DOMNodeList.
+ * It is static, i.e. changes in the DOM are not reflected here.
  */
 function DOMList(domlist) {
-  Collection.call(this);
   assert(typeof(domlist.item) == "function", "Not a DOMNodeList");
-  this._domlist = domlist;
+  var array = [];
+  for (var i = 0, l = domlist.length; i < l; i++) {
+    array.push(domlist[i]);
+  }
+  ArrayColl.call(this, array);
 }
 DOMList.prototype = {
-  /**
-   * This doesn't make much sense for Map.
-   * Please use set() instead.
-   */
   add : function(value) {
     throw "immutable";
   },
@@ -1044,10 +1045,44 @@ DOMList.prototype = {
   },
 
   clear : function() {
+    throw "immutable";
+  },
+}
+extend(DOMList, ArrayColl);
+
+/**
+ * A |Collection| which wraps a DOMNodeList.
+ * Changes in the DOM will be reflected here and
+ * be sent to the observers.
+ * TODO Not yet implemented
+ *
+function DynamicDOMList(domlist) {
+  Collection.call(this);
+  assert(typeof(domlist.item) == "function", "Not a DOMNodeList");
+  this._domlist = domlist;
+}
+DynamicDOMList.prototype = {
+  /**
+   * Adds this element to the DOM, at the end
+   *
+  add : function(el) {
+    throw "immutable";
+  },
+  /**
+   * Removes this element from the DOM
+   *
+  remove : function(el) {
+    throw "immutable";
+  },
+
+  /**
+   * Removes all child elements from the DOM
+   *
+  clear : function() {
     this.contents.forEach(function(item) {
       this._notifyRemoved(item, this);
     }, this);
-    this._domlist = {};
+    this._domlist = [];
   },
 
   get length() {
@@ -1065,59 +1100,10 @@ DOMList.prototype = {
 
   forEach : function(callback, self) {
     for (var i = 0, l = this._domlist.length; i < l; i++) {
-      var item = this._domlist.item(i);
+      var item = this._domlist[i];
       callback.call(self, item);
     }
   },
-
-  contains : function(value) {
-    return this.getKeyForValue(value) != undefined;
-  },
-
-  // containsKey : defined in KeyValueCollection
-
-  /**
-   * Sets the value for |key|
-   *
-   * @param key {String}
-   */
-  set : function(key, value) {
-    key = _coll_sanitizeString(key);
-    var oldValue = this._obj[key];
-    this._obj[key] = value;
-    if (oldValue !== undefined)
-      this._notifyRemoved(oldValue, this);
-    if (value !== undefined)
-      this._notifyAdded(value, this);
-  },
-
-  /**
-   * Gets the value for |key|
-   *
-   * If the key doesn't exist, returns null.
-   * @param key {String}
-   */
-  get : function(key) {
-    key = _coll_sanitizeString(key);
-    return this._obj[key];
-  },
-
-  removeKey : function(key) {
-    key = _coll_sanitizeString(key);
-    var value = this._obj[key];
-    if (value == undefined)
-      return;
-    delete this._obj[key];
-    this._notifyRemoved(value, this);
-  },
-
-  getKeyForValue : function(value) {
-    for (var key in this._obj) {
-      if (this._obj[key] == value)
-        return key;
-    }
-    return undefined;
-  },
-
 }
-extend(DOMList, Collection);
+extend(DynamicDOMList, Collection);
+*/
