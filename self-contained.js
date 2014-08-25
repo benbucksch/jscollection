@@ -125,13 +125,7 @@ Collection.prototype = {
    * @returns {Array of items} where |filterCallback| returned |true|
    */
   filter : function(filterCallback, self) {
-    var result = [];
-    this.forEach(function(item) {
-      if (filterCallback.call(self, item)) {
-        result.push(item);
-      }
-    }, this);
-    return new ArrayColl(result);
+    return new FilteredCollection(this, filterCallback, self);
   },
 
   /**
@@ -148,11 +142,7 @@ Collection.prototype = {
   },
 
   map : function(mapCallback, self) {
-    var result = [];
-    this.forEach(function(item) {
-      result.push(mapCallback.call(self, item));
-    }, this);
-    return new ArrayColl(result);
+    return new MapToCollection(this, mapCallback, self);
   },
 
   /**
@@ -440,7 +430,9 @@ function initAddition(self, coll1, coll2) {
 }
 
 /**
+ * Superset
  * Does not allow duplicates
+ * E.g. A = abcd, B = bdef, then with addition = abcdef.
  */
 function AdditionCollection(coll1, coll2) {
   Set.call(this);
@@ -466,7 +458,9 @@ AdditionCollection.prototype = {
 extend(AdditionCollection, Set);
 
 /**
+ * Superset
  * Allows duplicates
+ * E.g. A = abcd, B = bdef, then addition with dups = abcdbdef.
  */
 function AdditionCollectionWithDups(coll1, coll2) {
   ArrayColl.call(this);
@@ -483,7 +477,10 @@ AdditionCollection.prototype = {
 }
 extend(AdditionCollection, ArrayColl);
 
-
+/**
+ * Removes the second coll from the first.
+ * E.g. A = abcd, B = bdef, then substract = ac
+ */
 function SubtractCollection(collBase, collSubtract) {
   ArrayColl.call(this);
   assert(collBase instanceof Collection, "must be a Collection");
@@ -536,8 +533,99 @@ SubtractCollection.prototype = {
 }
 extend(SubtractCollection, ArrayColl);
 
+/**
+ * Returns a subset of |source|.
+ * Which items will be included is defined by |filterFunc|.
+ * This works like Array.filter().
+ *
+ * It's observable, i.e. if |source| changed and |filterFunc| matches,
+ * items will be added and the observers called.
+ *
+ * @param source {Collection}   Another collection that is to be filtered
+ * @param filterFunc {Function(item)}
+ *     |item| will be included in FilteredCollection, (only) if |true| is returned
+ * @param self {Objecŧ}   Will be passed as |this| to filterFunc
+ */
+function FilteredCollection(source, filterFunc, self) {
+  ArrayColl.call(this);
+  assert(source instanceof Collection, "must be a Collection");
+  this._source = source;
+  this._filterFunc = filterFunc;
+  this._self = self;
+
+  // add initial contents
+  source.forEach(function(item) {
+    if (filterFunc.call(self, item)) {
+      this._addWithoutObserver(item);
+    }
+  }, this);
+
+  source.registerObserver(this);
+}
+FilteredCollection.prototype = {
+  // Implement CollectionObserver
+  added : function(item) {
+    if (this._filterFunc.call(self, item)) {
+      this.add(item);
+    }
+  },
+  removed : function(item, coll) {
+    if ( !this.contains(item)) {
+      return;
+    }
+    this.remove(item);
+  },
+}
+extend(FilteredCollection, ArrayColl);
+
+/**
+ * For each item in |source|, returns another item defined by |mapFunc()|.
+ * This works like Array.map().
+ *
+ * It's observable, i.e. if |source| changed,
+ * mapped items will be added and the observers called.
+ * TODO removed() observer may not work properly
+ *
+ * @param source {Collection}   Another collection that is to be filtered
+ * @param mapFunc {Function(item)}
+ *     The result will be included in MapToCollection
+ * @param self {Objecŧ}   Will be passed as |this| to mapFunc
+ */
+function MapToCollection(source, mapFunc, self) {
+  ArrayColl.call(this);
+  assert(source instanceof Collection, "must be a Collection");
+  this._source = source;
+  this._mapFunc = mapFunc;
+  this._self = self;
+
+  // add initial contents
+  source.forEach(function(item) {
+    this._addWithoutObserver(mapFunc.call(self, item));
+  }, this);
+
+  source.registerObserver(this);
+}
+MapToCollection.prototype = {
+  // Implement CollectionObserver
+  added : function(item) {
+    this.add(this._mapFunc.call(self, item));
+  },
+  removed : function(item, coll) {
+    var mappedItem = this._mapFunc.call(self, item);
+    this.forEach(function(curItem) {
+      if (curItem == mappedItem) { // TODO Will not work with |Object|s
+        this.remove(curItem);
+      }
+    }, this);
+  },
+}
+extend(MapToCollection, ArrayColl);
 
 
+/**
+ * Has only those items that are in both coll1 and in coll2.
+ * E.g. A = abcd, B = bdef, then intersection = bd.
+ */
 function IntersectionCollection(coll1, coll2) {
   Set.call(this);
   assert(coll1 instanceof Collection, "must be a Collection");
@@ -723,14 +811,6 @@ ArrayColl.prototype = {
     this._array.forEach(callback, self);
   },
 
-  filter : function(callback, self) {
-    return new ArrayColl(this._array.filter(callback, self));
-  },
-
-  map : function(callback, self) {
-    return new ArrayColl(this._array.map(callback, self));
-  },
-
   /**
    * Sets the value at index |i|
    * This is similar to array[i]
@@ -871,14 +951,6 @@ Set.prototype = {
 
   forEach : function(callback, self) {
     this._array.forEach(callback, self);
-  },
-
-  filter : function(callback, self) {
-    return new ArrayColl(this._array.filter(callback, self));
-  },
-
-  map : function(callback, self) {
-    return new ArrayColl(this._array.map(callback, self));
   },
 }
 extend(Set, Collection);
