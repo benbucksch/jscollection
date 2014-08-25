@@ -650,7 +650,7 @@ function ArrayColl(copyFromArray) {
   KeyValueCollection.call(this);
   this._array = [];
   if (copyFromArray && copyFromArray.length) {
-    this.addAll(copyFromArray);
+    this._array = copyFromArray.slice(0);
   }
 }
 ArrayColl.prototype = {
