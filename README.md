@@ -70,19 +70,20 @@ The classes are standing alone, they do not change JS Array or Object types.
 
 (extract, full docs will be in module)
 
-### Collection
+Collection
+-----------
 
 Base class for all lists.
 
-`add(item)`
+### `add(item)`
   * Adds one item to the list
   * @param item {Object} any JS object
   
-`remove(item)`
+### `remove(item)`
   * Removes one item from the list
   * @param item {Object} any JS object
   
-`addAll(coll)`
+### `addAll(coll)`
   * Add all items in |coll| to this list.
   * This is just a convenience function.
   * This adds items statically and does not observe the |coll| changes.
@@ -90,94 +91,97 @@ Base class for all lists.
   * Note: This is intentionally not overloading |add|.
   * @param coll {Collection or JS Array}
   
-`removeAll(coll)`
+### `removeAll(coll)`
   * Removes all items in |coll| from this list
   * @param coll {Collection or JS Array}
   
-`clear()`
+### `clear()`
   * Removes all items from the list.
   
-`get length()`
+### `get length()`
   * The number of items in this list
   * @returns {Integer} (always >= 0)
   
-`get isEmpty()`
+### `get isEmpty()`
   * Whether there are items in this list
   * @returns {Boolean}
   
-`contains(item)`
+### `contains(item)`
   * Checks whether this item is in the list.
   * @returns {Boolean}
   
-`contents()`
+### `contents()`
   * Returns all items contained in this list, as a new JS array (so calling this can be expensive).
   * If the list is ordered, the result of this function is ordered in the same way.
   * While the returned array is a copy, the items are not, so changes to the array do not affect the list, but changes to its items do change the items in the list.
   * @returns {Array} new JS array with all items
   
-`__iterator__()`
+### `__iterator__()`
   * Provides an iterator, i.e. allows to write e.g.:
     var coll = new Set();
     for each (let item in coll)
       debug(item);
 
-`registerObserver(observer)`
+### `registerObserver(observer)`
   * Pass an object that will be called when items are added or removed from this list.
   * If you call this twice for the same observer, the second is a no-op.
   * @param observer {CollectionObserver}
 
-`unregisterObserver(observer)`
+### `unregisterObserver(observer)`
   * undo `registerObserver`
   * @param observer {CollectionObserver}
 
-### KeyValueCollection
+KeyValueCollection
+---------------------
 
 A collection where entries have a key or label or index.
 
 Examples of subclasses: Array (key = index), Map
 
-`set(key, item)`
+### `set(key, item)`
   * Sets the value for |key|
   * @param key
   
-`get(key)`
+### `get(key)`
   * Gets the value for |key|
   * If the key doesn't exist, returns |undefined|.
   * @param key
   
-`removeKey(key)`
+### `removeKey(key)`
   * Remove the key and its corresponding value item.
   * undo set(key, item)
   
-`containsKey(key)`
+### `containsKey(key)`
   * @returns {Boolean}
   
-`getKeyForValue(value)`
+### `getKeyForValue(value)`
   * Searches the whole list for this |value| and if found, returns the (first) key for it.
   * If not found, returns undefined.
   * @returns key
 
-### CollectionObserver
+CollectionObserver
+---------------------
 
-`added(item, list)`
+### `added(item, list)`
   * Called after an item has been added to the list.
   * @param item {Object} the removed item
   * @param coll {Collection} the observed list. convenience only.
   
-`removed(item, coll)`
+### `removed(item, coll)`
   * Called after an item has been removed from the list
   * TODO should clear() call removed() for each item? Currently: yes.
   * Alternative: separate cleared()
   * @param item {Object} the removed item
   * @param coll {Collection} the observed list. convenience only.
 
-### Operators
+Operators
+-----------
 
 add, subtract, and, xor - compare [Set theory](http://en.wikipedia.org/wiki/Set_theory) and sort
 
 All operators observe the original collections they are constructed from, and adapt the result based on changes, and notify any observers that are registered on the operator result collection.
 
-`mergeColl(coll1, coll2)`
+### `mergeColl(coll1, coll2)`
   * operator +
   * Returns a collection that contains all values from coll1 and coll2.
   * If the same item is in both coll1 and coll2, it will be added only once.
@@ -186,7 +190,7 @@ All operators observe the original collections they are constructed from, and ad
   * @param coll2 {Collection}
   * @returns {Collection} Does not preserve order.
   
-`concatColl(coll1, coll2)`
+### `concatColl(coll1, coll2)`
   * operator +
   * Returns a collection that contains all values from coll1 and coll2.
   * If the same item is in both coll1 and coll2, it will be added twice.
@@ -195,7 +199,7 @@ All operators observe the original collections they are constructed from, and ad
   * @param coll2 {Collection}
   * @returns {Collection} Preserves order
   
-`subtractColl(collBase, collSubtract)`
+### `subtractColl(collBase, collSubtract)`
   * operator -
   * Returns a collection that contains all values from collBase, apart from those in collSubtract.
   * [Set difference](http://en.wikipedia.org/wiki/Set_difference)
@@ -203,7 +207,7 @@ All operators observe the original collections they are constructed from, and ad
   * @param collSubtract {Collection}
   * @returns {Collection} Preserves order of collBase.
   
-`inCommonColl(coll1, coll2)`
+### `inCommonColl(coll1, coll2)`
   * operator &
   * Returns a collection that contains all values that are contained in *both* coll1 and coll1.
   * [Intersection](http://en.wikipedia.org/wiki/Intersection_(set_theory))
@@ -211,7 +215,7 @@ All operators observe the original collections they are constructed from, and ad
   * @param coll2 {Collection}
   * @returns {Collection} Does not preserve order.
   
-`notInCommonColl(coll1, coll2)`
+### `notInCommonColl(coll1, coll2)`
   * operator xor
   * Returns a collection that contains all values that are contained only in coll1 or coll2, but not in both.
   * [Symmetric difference](http://en.wikipedia.org/wiki/Symmetric_difference)
@@ -219,7 +223,7 @@ All operators observe the original collections they are constructed from, and ad
   * @param coll2 {Collection}
   * @returns {Collection} Does not preserve order.
   
-`sortColl(coll, sortFunc)`
+### `sortColl(coll, sortFunc)`
   * Returns a new collection that is sorted based on the |sortFunc|.
   * @param coll {Collection}
   * @param sortFunc(a {Item}, b {Item}) returns {Boolean} a > b
