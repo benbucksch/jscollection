@@ -47,13 +47,13 @@ Example
 
 Show only those server items which are not in local items, i.e. only offer new stuff
 
- var serverItems = new JArray();
- serverItems.add(itemA);
- serverItems.add(itemB);
- var localItems = listAllMyItems(path);
- var offerItems = subtract(serverItems, localItems);
- var listbox = E(&quot;itemsList&quot;);
- listbox.showList(offerItems);
+    var serverItems = new JArray();
+    serverItems.add(itemA);
+    serverItems.add(itemB);
+    var localItems = listAllMyItems(path);
+    var offerItems = subtract(serverItems, localItems);
+    var listbox = E("itemsList");
+    listbox.showList(offerItems);
 
 That's all already. Now, when items are added to serverItems, they automatically appear in the list UI (without any further app code), *unless* they are in localItems.
 
@@ -117,10 +117,11 @@ Base class for all lists.
   * @returns {Array} new JS array with all items
   
 ##### `__iterator__()`
+  * TODO
   * Provides an iterator, i.e. allows to write e.g.:
-    var coll = new Set();
-    for each (let item in coll)
-      debug(item);
+        var coll = new Set();
+        for each (let item in coll)
+          debug(item);
 
 ##### `registerObserver(observer)`
   * Pass an object that will be called when items are added or removed from this list.
@@ -183,9 +184,9 @@ All operators observe the original collections they are constructed from, and ad
 
 ##### `mergeColl(coll1, coll2)`
   * operator +
+  * [Union](http://en.wikipedia.org/wiki/Union_(set_theory))
   * Returns a collection that contains all values from coll1 and coll2.
   * If the same item is in both coll1 and coll2, it will be added only once.
-  * [Union](http://en.wikipedia.org/wiki/Union_(set_theory))
   * @param coll1 {Collection}
   * @param coll2 {Collection}
   * @returns {Collection} Does not preserve order.
@@ -201,30 +202,31 @@ All operators observe the original collections they are constructed from, and ad
   
 ##### `subtractColl(collBase, collSubtract)`
   * operator -
-  * Returns a collection that contains all values from collBase, apart from those in collSubtract.
   * [Set difference](http://en.wikipedia.org/wiki/Set_difference)
+  * Returns a collection that contains all values from collBase, apart from those in collSubtract.
   * @param collBase {Collection}
   * @param collSubtract {Collection}
   * @returns {Collection} Preserves order of collBase.
   
 ##### `inCommonColl(coll1, coll2)`
   * operator &
-  * Returns a collection that contains all values that are contained in *both* coll1 and coll1.
   * [Intersection](http://en.wikipedia.org/wiki/Intersection_(set_theory))
+  * Returns a collection that contains all values that are contained in *both* coll1 and coll1.
   * @param coll1 {Collection}
   * @param coll2 {Collection}
   * @returns {Collection} Does not preserve order.
   
 ##### `notInCommonColl(coll1, coll2)`
   * operator xor
-  * Returns a collection that contains all values that are contained only in coll1 or coll2, but not in both.
   * [Symmetric difference](http://en.wikipedia.org/wiki/Symmetric_difference)
+  * Returns a collection that contains all values that are contained only in coll1 or coll2, but not in both.
   * @param coll1 {Collection}
   * @param coll2 {Collection}
   * @returns {Collection} Does not preserve order.
   
 ##### `sortColl(coll, sortFunc)`
   * Returns a new collection that is sorted based on the |sortFunc|.
+  * TODO
   * @param coll {Collection}
   * @param sortFunc(a {Item}, b {Item}) returns {Boolean} a > b
   * @returns {Collection}
