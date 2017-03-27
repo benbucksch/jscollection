@@ -75,7 +75,7 @@ Collection
 
 Base class for all lists.
 
-### `add(item)`
+##### `add(item)`
   * Adds one item to the list
   * @param item {Object} any JS object
   
