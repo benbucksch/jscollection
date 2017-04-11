@@ -197,15 +197,6 @@ add, subtract, and, xor - compare [Set theory](http://en.wikipedia.org/wiki/Set_
 
 All operators observe the original collections they are constructed from, and adapt the result based on changes, and notify any observers that are registered on the operator result collection.
 
-##### `mergeColl(coll1, coll2)`
-  * operator +
-  * [Union](http://en.wikipedia.org/wiki/Union_(set_theory))
-  * Returns a collection that contains all values from coll1 and coll2.
-  * If the same item is in both coll1 and coll2, it will be added only once.
-  * @param coll1 {Collection}
-  * @param coll2 {Collection}
-  * @returns {Collection} Does not preserve order.
-  
 ##### `concatColl(coll1, coll2)`
   * operator +
   * Returns a collection that contains all values from coll1 and coll2.
@@ -214,7 +205,16 @@ All operators observe the original collections they are constructed from, and ad
   * @param coll1 {Collection}
   * @param coll2 {Collection}
   * @returns {Collection} Preserves order
-  
+
+##### `mergeColl(coll1, coll2)`
+  * operator +
+  * [Union](http://en.wikipedia.org/wiki/Union_(set_theory))
+  * Returns a collection that contains all values from coll1 and coll2.
+  * If the same item is in both coll1 and coll2, it will be added only once.
+  * @param coll1 {Collection}
+  * @param coll2 {Collection}
+  * @returns {Collection} Does not preserve order.
+
 ##### `subtractColl(collBase, collSubtract)`
   * operator -
   * [Set difference](http://en.wikipedia.org/wiki/Set_difference)
@@ -226,7 +226,7 @@ All operators observe the original collections they are constructed from, and ad
 ##### `inCommonColl(coll1, coll2)`
   * operator &
   * [Intersection](http://en.wikipedia.org/wiki/Intersection_(set_theory))
-  * Returns a collection that contains all values that are contained in *both* coll1 and coll1.
+  * Returns a collection that contains the values that are contained in *both* coll1 and coll1, and only those.
   * @param coll1 {Collection}
   * @param coll2 {Collection}
   * @returns {Collection} Does not preserve order.
