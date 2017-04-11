@@ -115,7 +115,29 @@ Base class for all lists.
   * If the list is ordered, the result of this function is ordered in the same way.
   * While the returned array is a copy, the items are not, so changes to the array do not affect the list, but changes to its items do change the items in the list.
   * @returns {Array} new JS array with all items
-  
+
+##### `forEach(func)`
+  * Iterates over all items in the list.
+  * @returns {Boolean}
+
+##### `filter(filterFunc)`
+  * Returns a new observable collection with all matching items.
+  * The result will be dynamically updated as the source collection changes.
+  * @param filterCallback {Function(item)}
+  * @returns {Array of items} where |filterFunc| returned |true|
+
+##### `find(filterFunc)`
+  * Returns the first matching item.
+  * @param filterCallback {Function(item)}
+  * @returns {Object} for which |filterFunc| returned |true|
+
+##### `map(mapFunc)`
+  * For each item in the source collection, return a corresponding other item
+  * as determined by |mapFunc|.
+  * The result is an observable collection and will be dynamically updated
+  * as the source collection changes.
+  * @returns {Array of Object} whereby {Object} is the result of |mapFunc()|
+
 ##### `__iterator__()`
   * TODO
   * Provides an iterator, i.e. allows to write e.g.:
