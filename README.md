@@ -221,7 +221,7 @@ To create a collection, instantiate one of these.
   * - can *not* hold the same item several times
   * - fast
 
-##### `DOMList`
+##### `DOMColl`
   * A |Collection| which wraps a DOMNodeList.
   * It is static, i.e. changes in the DOM are not reflected here.
   * @param {DOMNodeList}
@@ -309,12 +309,6 @@ Options:
 
 * specify id and sortBy properties or -- more convenient
 * specify isSameObject() and isGreaterThan() functions - more flexible
-
-### Naming
-The [Set](https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Set) object is available in future versions of Firefox and thus this name should not be used.
-
-### Compatibilty
-* What should be the [http://robertnyman.com/javascript/ JavaScript version and features] this module relies on? Relying on JavaScript 1.6 would make it possible to use the JavaScript Collections with Google Chrome V8 JavaScript engine as well and thus the JavaScript Collections module would be useful for more people for more context, and a developer using the JavaScript Collections for Jetpack could use it as-is on many other web projects. That would ease many developers' life.
 
 ### Weak references
 * Leveraging [WeakMap](https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/WeakMap)  should be considered.
