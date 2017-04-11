@@ -178,7 +178,7 @@ Collection.prototype = {
    * @returns {Collection} Preserves order.
    */
   concat : function(otherColl) {
-    concatColl(this, otherColl);
+    return new AdditionCollection(this, otherColl);
   },
 
   /**
@@ -190,7 +190,7 @@ Collection.prototype = {
    * @returns {Collection} Does not preserve order.
    */
   merge : function(otherColl) {
-    mergeColl(this, otherColl);
+    return new AdditionCollectionWithDups(this, otherColl);
   },
 
   /**
@@ -201,7 +201,7 @@ Collection.prototype = {
    * @returns {Collection} Preserves order of collBase.
    */
   subtract : function(collSubtract) {
-    subtractColl(this, collSubtract);
+    return new SubtractCollection(this, collSubtract);
   },
 
   /**
@@ -213,7 +213,7 @@ Collection.prototype = {
    * @returns {Collection} Does not preserve order.
    */
   inCommon : function(otherColl) {
-    inCommonColl(this, otherColl);
+  return new IntersectionCollection(this, otherColl);
   },
 
   /**
