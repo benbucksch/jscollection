@@ -47,10 +47,8 @@ Example
 
 Show only those server items which are not in local items, i.e. only offer new stuff
 
-    var serverItems = new ArrayColl();
-    serverItems.add(itemA);
-    serverItems.add(itemB);
-    var localItems = listAllMyItems(path);
+    var serverItems = new ArrayColl([ itemA, itemB ]);
+    var localItems = getAllLocalItems(path);
     var offerItems = serverItems.subtract(localItems);
     var listbox = E("itemsList");
     listbox.showList(offerItems);
