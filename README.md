@@ -250,11 +250,10 @@ Implementation
 ==============
 
 DONE
-* Ben Bucksch provided API, base implementation, Array, Set, and operators
+* Ben Bucksch provided API, base implementation, Array, Set, Map, and operators
 
 TODO
-* Ben will implement Map and sortColl()
-* M.-A. Darche will provide OrderedMap and possibly OrderedSet
+* Ben will implement sortColl()
 * Others are welcome to make UI elements support these collections.
 * The code will be documented using the [JSDoc conventions](http://code.google.com/intl/en/closure/compiler/docs/js-for-compiler.html).
 
