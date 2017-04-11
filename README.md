@@ -178,6 +178,8 @@ Examples of subclasses: Array (key = index), Map
 CollectionObserver
 ---------------------
 
+To listen to collection changes, you need to implement this interface.
+
 ##### `added(item, list)`
   * Called after an item has been added to the list.
   * @param item {Object} the removed item
@@ -194,7 +196,7 @@ CollectionObserver
 Concrete collections
 ----------------------
 
-Instantiate one of these:
+To create a collection, instantiate one of these.
 
 #### `ArrayColl`
   * A |KeyValueCollection| based on a JS Array.
