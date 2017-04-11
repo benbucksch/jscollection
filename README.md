@@ -259,7 +259,6 @@ TODO
 
 Code / download
 * `git clone https://github.com/benbucksch/jscollection`
-* [Bug 722597](https://bugzilla.mozilla.org/show_bug.cgi?id=722597)
 
 Feedback needed
 -------------------
