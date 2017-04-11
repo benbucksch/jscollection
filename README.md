@@ -138,13 +138,6 @@ Base class for all lists.
   * as the source collection changes.
   * @returns {Collection of Object} whereby {Object} is the result of |mapFunc()|
 
-##### `__iterator__()`
-  * TODO
-  * Provides an iterator, i.e. allows to write e.g.:
-        var coll = new Set();
-        for each (let item in coll)
-          debug(item);
-
 ##### `registerObserver(observer)`
   * Pass an object that will be called when items are added or removed from this list.
   * If you call this twice for the same observer, the second is a no-op.
