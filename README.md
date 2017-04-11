@@ -215,7 +215,7 @@ To create a collection, instantiate one of these.
   * - fast
 
 #### `Map`
-  * A |Collection| which can hold each object only once.
+  * A |KeyValueCollection| which can hold each object only once.
   * Properties:
   * - not ordered
   * - can *not* hold the same item several times

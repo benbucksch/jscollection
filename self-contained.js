@@ -483,7 +483,7 @@ var xorColl = notInCommonColl;
 
 
 /**
- * A |Collection| based on a JS Array.
+ * A |KeyValueCollection| based on a JS Array.
  * Properties:
  * - ordered
  * - indexed: every item has an integer key
@@ -716,7 +716,7 @@ extend(Set, Collection);
 
 
 /**
- * A |Collection| which can hold each object only once.
+ * A |KeyValueCollection| which can hold each object only once.
  * Properties:
  * - not ordered
  * - can *not* hold the same item several times
