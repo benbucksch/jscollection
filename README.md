@@ -47,11 +47,11 @@ Example
 
 Show only those server items which are not in local items, i.e. only offer new stuff
 
-    var serverItems = new JArray();
+    var serverItems = new ArrayColl();
     serverItems.add(itemA);
     serverItems.add(itemB);
     var localItems = listAllMyItems(path);
-    var offerItems = subtract(serverItems, localItems);
+    var offerItems = serverItems.subtract(localItems);
     var listbox = E("itemsList");
     listbox.showList(offerItems);
 
@@ -137,6 +137,33 @@ Base class for all lists.
   * The result is an observable collection and will be dynamically updated
   * as the source collection changes.
   * @returns {Collection of Object} whereby {Object} is the result of |mapFunc()|
+
+##### `concat(otherColl)`
+  * operator +
+  * @see concatColl()
+
+##### `merge(otherColl)`
+  * operator +
+  * [Union](http://en.wikipedia.org/wiki/Union_(set_theory))
+  * @see mergeColl()
+
+##### `subtract(collSubtract)`
+  * operator -
+  * [Set difference](http://en.wikipedia.org/wiki/Set_difference)
+  * @see subtractColl()
+
+##### `inCommonColl(otherColl)`
+  * operator &
+  * [Intersection](http://en.wikipedia.org/wiki/Intersection_(set_theory))
+  * @see inCommonColl()
+
+##### `notInCommonColl(otherColl)`
+  * operator xor
+  * [Symmetric difference](http://en.wikipedia.org/wiki/Symmetric_difference)
+  * @see notInCommonColl()
+
+##### `sortColl(sortFunc)`
+  * @see sortColl()
 
 ##### `registerObserver(observer)`
   * Pass an object that will be called when items are added or removed from this list.
