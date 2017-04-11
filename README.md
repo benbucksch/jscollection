@@ -190,6 +190,36 @@ CollectionObserver
   * @param item {Object} the removed item
   * @param coll {Collection} the observed list. convenience only.
 
+
+Concrete collections
+----------------------
+
+Instantiate one of these:
+
+#### `ArrayColl`
+  * A |KeyValueCollection| based on a JS Array.
+  * Properties:
+  * - ordered
+  * - indexed: every item has an integer key
+  * - can hold the same item several times
+  * - fast
+  * @param copyFromArray {Array} (optional) init the collection with these values
+
+#### `Set`
+  * A |Collection| which can hold each object only once.
+  * Properties:
+  * - not ordered
+  * - can *not* hold the same item several times
+  * - fast
+
+#### `Map`
+  * A |Collection| which can hold each object only once.
+  * Properties:
+  * - not ordered
+  * - can *not* hold the same item several times
+  * - fast
+
+
 Operators
 -----------
 
