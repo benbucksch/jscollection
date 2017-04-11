@@ -124,7 +124,7 @@ Base class for all lists.
   * Returns a new observable collection with all matching items.
   * The result will be dynamically updated as the source collection changes.
   * @param filterCallback {Function(item)}
-  * @returns {Array of items} where |filterFunc| returned |true|
+  * @returns {Collection of items} where |filterFunc| returned |true|
 
 ##### `find(filterFunc)`
   * Returns the first matching item.
@@ -136,7 +136,7 @@ Base class for all lists.
   * as determined by |mapFunc|.
   * The result is an observable collection and will be dynamically updated
   * as the source collection changes.
-  * @returns {Array of Object} whereby {Object} is the result of |mapFunc()|
+  * @returns {Collection of Object} whereby {Object} is the result of |mapFunc()|
 
 ##### `__iterator__()`
   * TODO
