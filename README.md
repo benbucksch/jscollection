@@ -198,7 +198,7 @@ Concrete collections
 
 To create a collection, instantiate one of these.
 
-#### `ArrayColl`
+##### `ArrayColl`
   * A |KeyValueCollection| based on a JS Array.
   * Properties:
   * - ordered
@@ -207,19 +207,24 @@ To create a collection, instantiate one of these.
   * - fast
   * @param copyFromArray {Array} (optional) init the collection with these values
 
-#### `Set`
+##### `SetColl`
   * A |Collection| which can hold each object only once.
   * Properties:
   * - not ordered
   * - can *not* hold the same item several times
   * - fast
 
-#### `Map`
+##### `MapColl`
   * A |KeyValueCollection| which can hold each object only once.
   * Properties:
   * - not ordered
   * - can *not* hold the same item several times
   * - fast
+
+##### `DOMList`
+  * A |Collection| which wraps a DOMNodeList.
+  * It is static, i.e. changes in the DOM are not reflected here.
+  * @param {DOMNodeList}
 
 
 Operators
