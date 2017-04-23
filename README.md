@@ -27,7 +27,7 @@ Show only those server items which are not in local items, i.e. only offer new s
 
 That's all. When items are added to serverItems later, they automatically appear in the list UI, *unless* they are in localItems. newItems will be automatically updated and displayed, without further application code.
 
-That's because the subtract operator automatically subscribed to changes in serverItems. If you then later do serverItems.add(itemC), the subtract operator would check whether the same items is in localItem, and only if it's not, it would add it to offerItems. listbox.showList() in turn automatically subscribed to changes in offerItems, gets notified about the new item there, and shows it. All of that would happen just with the above code lines, there is no additional code needed to follow updates.
+That's because the subtract operator automatically subscribed to changes in serverItems. If you then later do serverItems.add(itemC), the subtract operator would check whether the same items is in localItem, and only if it's not, it would add it to newItems. listbox.showCollection() in turn automatically subscribed to changes in newItems, gets notified about the new item there, and shows it. All of that would happen just with the above code lines, there is no additional code needed to follow updates.
 
 Of course, if you wanted to show both serverItems and localItems in the UI, you would do |add()| instead of |substract()|.
 
