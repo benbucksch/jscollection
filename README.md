@@ -3,14 +3,34 @@ Author: Ben Bucksch
 JavaScript Collections
 ===================
 
-This describes a future module that will have a coherent set of collection/list classes
+This describes a module with a coherent set of collection/list classes.
 
 This is mostly about 3 aspects:
 * A common API for various collection types (array, set, map, OrderedMap etc.), similar to java.util.Collection.
 * observers to notify about changes
-* operators for whole lists, like concat, merge, substract, intersect etc.
+* operators for whole lists, like concat, merge, substract, intersect etc..
+These aspects work together: Operation results are observable and change when the operand collections change. Operations can be chained. All collection types support all operations.
 
 The real value comes from being a coherent API and base functionality that can be used in other APIs, and these other APIs are fitting together naturally. If each API uses a slightly different API to add/remove items, not only does the programmer have to learn each API, but he also has to do the plumbing between the components all manually. This gets particularly tedious as there need to be dynamic updates from one component to another, e.g. data to UI or pref dialog to main UI. The advantage here is that this is a powerful, yet lean system to plug modules together with custom operators in between. Basically LEGO Technic.
+
+Example
+=======
+
+Show only those server items which are not in local items, i.e. only offer new stuff
+
+    var serverItems = new ArrayColl([ itemA, itemB ]);
+    var localItems = getAllLocalItems(path);
+    var offerItems = serverItems.subtract(localItems);
+    var listbox = E("itemsList");
+    listbox.showList(offerItems);
+
+That's all already. Now, when items are added to serverItems, they automatically appear in the list UI (without any further app code), *unless* they are in localItems.
+
+That's because the subtract operator automatically subscribed to changes in serverItems. If you then later do serverItems.add(itemC), the subtract operator would check whether the same items is in localItem, and only if it's not, it would add it to offerItems. listbox.showList() in turn automatically subscribed to changes in offerItems, gets notified about the new item there, and shows it. All of that would happen just with the above code lines, there is no additional code needed to follow updates.
+
+Of course, if you wanted to show both serverItems and localItems in the UI, you would do |add()| instead of |substract()|.
+
+This means that you don't need additional wiring to make the UI update after the user (or server) did add/remove item actions, you only need to update the underlying lists.
 
 Functionality
 ============
@@ -41,25 +61,6 @@ Functionality
   * The API of the UI then wouldn't need "add/remoteItem" functions itself.
 * Other classes
   * Pretty much anything that takes a list in Jetpack could be using this API, at least optionally.
-
-Example
-=======
-
-Show only those server items which are not in local items, i.e. only offer new stuff
-
-    var serverItems = new ArrayColl([ itemA, itemB ]);
-    var localItems = getAllLocalItems(path);
-    var offerItems = serverItems.subtract(localItems);
-    var listbox = E("itemsList");
-    listbox.showList(offerItems);
-
-That's all already. Now, when items are added to serverItems, they automatically appear in the list UI (without any further app code), *unless* they are in localItems.
-
-That's because the subtract operator automatically subscribed to changes in serverItems. If you then later do serverItems.add(itemC), the subtract operator would check whether the same items is in localItem, and only if it's not, it would add it to offerItems. listbox.showList() in turn automatically subscribed to changes in offerItems, gets notified about the new item there, and shows it. All of that would happen just with the above code lines, there is no additional code needed to follow updates.
-
-Of course, if you wanted to show both serverItems and localItems in the UI, you would do |add()| instead of |substract()|.
-
-This means that you don't need additional wiring to make the UI update after the user (or server) did add/remove item actions, you only need to update the underlying lists.
 
 API
 ===
