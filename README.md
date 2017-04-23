@@ -6,11 +6,11 @@ JavaScript Collections
 JS Collections provides a coherent set of collection/list classes. They form a powerful, yet lean system to design component APIs and plug different modules together between backend logic and UI. Like LEGO Technic. It simplifes application code with list operators and automatic updates.
 
 This is mostly about 3 aspects:
-* A *common API* for various collection types (array, set, map, OrderedMap etc.), similar to java.util.Collection.
-* *observers* to notify about changes, allowing automatic updates
-* *operators* for whole lists, like concat, merge, substract, intersect etc..
+* **Common API** for various collection types (array, set, map, OrderedMap, DOM list etc.), similar to java.util.Collection.
+* **Observers** to notify about changes, allowing automatic updates
+* **Operators** for whole lists, like concat, merge, substract, intersect etc..
 
-These aspects work together: Operation results are observable and change when the operand collections change. Operations can be chained. All collection types support all operations.
+These aspects work together: Operation results are observable and change when the underlying operand collections change. Operations can be chained. All collection types support all operations.
 
 The real value comes from a coherent API and base functionality that can be used in other APIs.  It removes the need for getItemList(), addItem()/removeItem(), addObserver()/removeObserver(), load(callback) functions in your API, and allows modules to work together. If each API uses a slightly different API to add/remove items, not only does the programmer have to learn each API, but he also has to do the plumbing between the components all manually. This gets particularly tedious as there need to be dynamic updates from one component to another, e.g. data to UI or pref dialog to main UI.
 
@@ -315,17 +315,19 @@ Implementation
 
 DONE
 * Ben Bucksch provided API, base implementation, Array, Set, Map, and operators
+* Code documentation using the [JSDoc conventions](http://code.google.com/intl/en/closure/compiler/docs/js-for-compiler.html).
 
 TODO
-* Ben will implement sortColl()
-* Others are welcome to make UI elements support these collections.
-* The code will be documented using the [JSDoc conventions](http://code.google.com/intl/en/closure/compiler/docs/js-for-compiler.html).
+* sort operator
+* OrderedMap
+* UI list elements that accept these collections
+* Backend APIs emit these collections
 
 Code / download
 * `git clone https://github.com/benbucksch/jscollection`
 
-Feedback needed
--------------------
+Feedback
+----------
 
 ### Comparison of items
 How to specify identity and sorting for items, e.g. "if |id| property matches, it's the same item" and "sort on |name| property" or "if a.name > b.name, then a > b"
