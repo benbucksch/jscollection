@@ -7,11 +7,14 @@ This describes a module with a coherent set of collection/list classes.
 
 This is mostly about 3 aspects:
 * A common API for various collection types (array, set, map, OrderedMap etc.), similar to java.util.Collection.
-* observers to notify about changes
+* observers to notify about changes, allowing automatic updates and removing the need for an async load API
 * operators for whole lists, like concat, merge, substract, intersect etc..
+
 These aspects work together: Operation results are observable and change when the operand collections change. Operations can be chained. All collection types support all operations.
 
-The real value comes from being a coherent API and base functionality that can be used in other APIs, and these other APIs are fitting together naturally. If each API uses a slightly different API to add/remove items, not only does the programmer have to learn each API, but he also has to do the plumbing between the components all manually. This gets particularly tedious as there need to be dynamic updates from one component to another, e.g. data to UI or pref dialog to main UI. The advantage here is that this is a powerful, yet lean system to plug modules together with custom operators in between. Basically LEGO Technic.
+The real value comes from a coherent API and base functionality that can be used in other APIs.  It removes the need for getItemList(), addItem()/removeItem(), addObserver()/removeObserver(), load(callback) functions in your API, and allows modules to work together. If each API uses a slightly different API to add/remove items, not only does the programmer have to learn each API, but he also has to do the plumbing between the components all manually. This gets particularly tedious as there need to be dynamic updates from one component to another, e.g. data to UI or pref dialog to main UI.
+
+JS Collections are a powerful, yet lean system to design component APIs and plug different modules together between backend logic and UI. Basically LEGO Technic. It simplifes application code with list operators, async loading and automatic updates.
 
 Example
 =======
