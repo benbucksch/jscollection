@@ -12,24 +12,26 @@ This is mostly about 3 aspects:
 
 These aspects work together: Operation results are observable and change when the underlying operand collections change. Operations can be chained. All collection types support all operations.
 
+That means you can have a `shopItems` collection defined as the result of `installedItems` subtracted from `availableItems` . When you show the `shopItems`, the user sees only those items that are not yet installed. Now, as soon as an item is added to `installedItems`, it automatically disappears from the shop UI - immediately, without you having to write any extra code in the UI to support these updates. You don't have to install observers to `installedItems`, because the subtract operator already does that. If your list UI component observes list changes using the collection API here, you don't need any UI update wiring at all. Its all calculated and updated automatically. The `installedItems` can be managed by a backend module - completely independently from the UI. This allows you to decouple logic from the UI.
+
 The real value comes from a coherent API and base functionality that can be used in other APIs.  It removes the need for getItemList(), addItem()/removeItem(), addObserver()/removeObserver(), load(callback) functions in your API, and allows modules to work together. If each API uses a slightly different API to add/remove items, not only does the programmer have to learn each API, but he also has to do the plumbing between the components all manually. This gets particularly tedious as there need to be dynamic updates from one component to another, e.g. data to UI or pref dialog to main UI.
 
 Example
 =======
 
-Show only those server items which are not in local items, i.e. only offer new stuff
+Show only those items which are not already purchased, i.e. only offer new stuff
 
-    var serverItems = new ArrayColl([ itemA, itemB ]);
-    var localItems = getAllLocalItems(path);
-    var newItems = serverItems.subtract(localItems);
+    var availableItems = new ArrayColl([ itemA, itemB ]);
+    var installedItems = getInstalledItems(path);
+    var shopItems = availableItems.subtract(installedItems);
     var listbox = E("itemsList");
-    listbox.showCollection(newItems);
+    listbox.showCollection(shopItems);
 
-That's all. When items are added to serverItems later, they automatically appear in the list UI, *unless* they are in localItems. newItems will be automatically updated and displayed, without further application code.
+That's all. When items are added to `availableItems` later, they automatically appear in the list UI, *unless* they are in `installedItems`. `shopItems` will be automatically updated and displayed, without further application code.
 
-That's because the subtract operator automatically subscribed to changes in serverItems. If you then later do serverItems.add(itemC), the subtract operator would check whether the same items is in localItem, and only if it's not, it would add it to newItems. listbox.showCollection() in turn automatically subscribed to changes in newItems, gets notified about the new item there, and shows it. All of that would happen just with the above code lines, there is no additional code needed to follow updates.
+That's because the subtract operator automatically subscribed to changes in `availableItems`. If you then later do `availableItems.add(itemC)`, the subtract operator would check whether the same items is in `installedItems`, and only if it's not, it would add it to `shopItems`. `listbox.showCollection()` in turn automatically subscribed to changes in `shopItems`, gets notified about the new item there, and shows it. All of that would happen just with the above code lines, there is no additional code needed to follow updates.
 
-Of course, if you wanted to show both serverItems and localItems in the UI, you would do |add()| instead of |substract()|.
+Of course, if you wanted to show both `availableItems` and `installedItems` in the UI, you would do `add()` instead of `substract()`.
 
 This means that you don't need additional wiring to make the UI update after the user (or server) did add/remove item actions, you only need to update the underlying lists.
 
@@ -41,7 +43,7 @@ Functionality
   * with observers to allow you to subscribe to changes and be notified when items are added or remoted
   * Ability to specify identity and sorting for items, e.g. "if |id| property matches, it's the same item" and "sort on |name| property" or "if a.name > b.name, then a > b"
 * Operators on the collections
-  * Operate on whole lists, e.g. allItems = add(serverItems, localItems);
+  * Operate on whole lists, e.g. `allItems = add(availableItems, installedItems);`
   * Update result dynamically using observers
   * add, merge
   * subtract

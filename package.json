@@ -1,8 +1,8 @@
 {
-  "name": "collection",
-  "fullName": "Collection classes",
-  "description": "List classes like Array, Set, Map, with observers and operators",
-  "author": "Ben Bucksch of Beonex",
-  "license": "MPL 1.1 (only this version)/GPL 2.0 or 3.0/LGPL 2.1 or 3.0",
+  "name": "jscollections",
+  "fullName": "JS Collections",
+  "description": "Lists like Array, Set, Map, with operators and observers",
+  "author": "Ben Bucksch",
+  "license": "MIT",
   "version": "0.1"
 }
