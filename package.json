@@ -4,5 +4,5 @@
   "description": "Lists like Array, Set, Map, with operators and observers",
   "author": "Ben Bucksch",
   "license": "MIT",
-  "version": "0.1"
+  "version": "0.1.1"
 }
