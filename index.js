@@ -3,11 +3,11 @@
  * for more convenient importing.
  */
 
-export { Collection, CollectionObserver, KeyValueCollection } from "./array.js"
-export { ArrayColl } from "./array.js"
-export { Set } from "./set.js"
-export { mergeColl, concatDups, subtractColl, inCommonColl, notInCommonColl,
-    addColl, addCollWithDups, andColl, xorColl,
-    } from "./basic-operators.js"
-export { sortColl } from "./sort.js"
-export { DelegateCollection } from "./delegate.js"
+export * from "./lib/api.js"
+export * from "./lib/basic-operators.js"
+export * from "./lib/sort.js"
+export * from "./lib/array.js"
+export * from "./lib/map.js"
+export * from "./lib/set.js"
+export * from "./lib/dom.js"
+export * from "./lib/delegate.js"
