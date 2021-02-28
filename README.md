@@ -210,16 +210,15 @@ CollectionObserver
 To listen to collection changes, you need to implement this interface.
 
 ##### `added(item, list)`
-  * Called after an item has been added to the list.
+  * Called after an item has been added to the collection.
   * @param item {`Object`} the removed item
   * @param coll {`Collection`} the observed list. convenience only.
 
 ##### `removed(item, coll)`
-  * Called after an item has been removed from the list
-  * TODO should clear() call removed() for each item? Currently: yes.
-  * Alternative: separate cleared()
+  * Called after an item has been removed from the collection.
   * @param item {`Object`} the removed item
   * @param coll {`Collection`} the observed list. convenience only.
+  * TODO should clear() call removed() for each item? Currently: yes. Alternative: separate cleared()
 
 
 Concrete collections
@@ -244,21 +243,22 @@ To create a collection, instantiate one of these.
   * - fast
 
 ##### `MapColl`
-  * A `KeyValueCollection` which can hold each object only once.
+  * A `KeyValueCollection` which can map one string or object to another object.
   * Properties:
   * - not ordered
-  * - can *not* hold the same item several times
+  * - can hold the same item several times, as long as the key is different
   * - fast
- * A |Collection| which can map one string or object to another object.
- * Properties:
- * - not ordered
- * - can *not* hold the same key several times
- * - fast
 
 ##### `DOMColl`
   * A `Collection` which wraps a DOMNodeList.
-  * It is static, i.e. changes in the DOM are not reflected here.
+  * Static, i.e. changes in the DOM are not reflected here.
   * @param {`DOMNodeList`}
+
+##### `DynamicDOMColl`
+  * A `Collection` which wraps a DOMNodeList.
+  * Dynamic, i.e. changes in the DOM are reflected in the collection and trigger the observers.
+  * @param {`DOMNodeList`}
+  * Not yet implemented
 
 
 Operators
