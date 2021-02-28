@@ -198,7 +198,7 @@ class Collection {
    * @returns {Collection} Preserves order.
    */
   concat(otherColl) {
-    return new AdditionCollection(this, otherColl);
+    return new AdditionCollectionWithDups(this, otherColl);
   }
 
   /**
@@ -210,7 +210,7 @@ class Collection {
    * @returns {Collection} Does not preserve order.
    */
   merge(otherColl) {
-    return new AdditionCollectionWithDups(this, otherColl);
+    return new AdditionCollection(this, otherColl);
   }
 
   /**
