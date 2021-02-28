@@ -1,5 +1,5 @@
 {
-  "name": "reactive-collections",
+  "name": "recollections",
   "fullName": "JS Collections",
   "description": "Collections like Array, Set, Map, with operators and observers, for reactive applications",
   "author": "Ben Bucksch",
