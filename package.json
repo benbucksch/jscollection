@@ -1,7 +1,7 @@
 {
-  "name": "jscollections",
+  "name": "reactive-collections",
   "fullName": "JS Collections",
-  "description": "Lists like Array, Set, Map, with operators and observers",
+  "description": "Collections like Array, Set, Map, with operators and observers, for reactive applications",
   "author": "Ben Bucksch",
   "license": "MIT",
   "version": "0.1.1"
