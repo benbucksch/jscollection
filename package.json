@@ -1,7 +1,7 @@
 {
-  "name": "recollections",
+  "name": "recollections-req",
   "fullName": "JS Collections",
-  "description": "Collections like Array, Set, Map, with operators and observers, for reactive applications",
+  "description": "Collections like Array, Set, Map, with operators and observers, for reactive applications - require() version",
   "version": "0.1.2",
   "license": "MIT",
   "author": "Ben Bucksch"

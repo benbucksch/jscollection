@@ -1,5 +1,7 @@
 Author: Ben Bucksch
 
+This is the version using require() instead of ES6 modules.
+
 JavaScript Collections
 ===================
 
