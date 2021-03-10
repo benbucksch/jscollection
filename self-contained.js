@@ -12,6 +12,7 @@
 class Collection {
   constructor() {
     this._observers = [];
+    this._svelteObservers = [];
   }
 
   /**
@@ -108,6 +109,10 @@ class Collection {
     throw "implement";
   }
 
+  get each() {
+    return this.contents;
+  }
+
   /**
    * The first item in the list
    * @returns {Object}
@@ -168,23 +173,33 @@ class Collection {
 
   /**
    * Provides an iterator, i.e. allows to write:
-   * var coll = new SetColl();
    * for (let item of coll) {
    *   debug(item);
    * }
    *
    * Subclasses may override this with a more
    * efficient implementation. But take care that
-   * a remove() during the iteration doesn't confuse it.
-   *
-  iterator : function*() {
-    var items = this.contents;
-    for (var i = 0; i < items.length; i++) {
-      yield items[i];
+   * a `remove()` during the iteration doesn't confuse it.
+   */
+  [Symbol.iterator]() {
+    let array = this.contents;
+    let i = 0;
+    return {
+      next: () => {
+        if (i >= array.length) {
+          return { done: true };
+        }
+        return { value: array[i++], done: false };
+      }
     }
+    /*
+    iterator: function*() {
+      var items = this.contents;
+      for (var i = 0; i < items.length; i++) {
+        yield items[i];
+      }
+    }*/
   }
-  */
-
 
 
   // Convenience methods for operators
@@ -296,6 +311,7 @@ class Collection {
         console.error(e);
       }
     });
+    this._notifyChanged();
   }
 
   _notifyRemoved(items) {
@@ -306,6 +322,33 @@ class Collection {
         console.error(e);
       }
     });
+    this._notifyChanged();
+  }
+
+  // Svelte subscribe() API
+
+  _notifyChanged() {
+    this._svelteObservers.forEach(observer => {
+      try {
+        observer(this);
+      } catch (e) {
+        console.error(e);
+      }
+    });
+  }
+
+  subscribe(observer) {
+    assert(typeof(observer) == "function", "Need a function");
+    this._svelteObservers.push(observer);
+    // Per Svelte API, call the observer immediately after subscribe()
+    try {
+      observer(this);
+    } catch (ex) {
+      console.error(ex);
+    }
+    return () => { // unsubscribe
+      _coll_arrayRemove(this._svelteObservers, observer);
+    }
   }
 }
 
