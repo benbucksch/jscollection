@@ -1,5 +1,3 @@
-Author: Ben Bucksch
-
 JavaScript Collections for Svelte
 ===================
 
@@ -14,9 +12,7 @@ These aspects work together: Operation results are observable and change when th
 
 That means you can have a `shopItems` collection defined as the result of `installedItems` subtracted from `availableItems` . When you show the `shopItems`, the user sees only those items that are not yet installed. Now, as soon as an item is added to `installedItems`, it automatically disappears from the shop UI - immediately, without you having to write any extra code in the UI to support these updates. You don't have to install observers to `installedItems`, because the subtract operator already does that. If your list UI component observes list changes using the collection API here, you don't need any UI update wiring at all. Its all calculated and updated automatically. The `installedItems` can be managed by a backend module - completely independently from the UI. This allows you to decouple logic from the UI.
 
-It works directly with Svelte. All you need to do is add a `$` in front when you use the collection in the HTML part. It removes the need to re-assign the array every time anything changes it, even other functions that you call, and Svelte to notice changes and automatically update the UI. You only need to call `add()` or `remove()` on the collection.
-
-The real value comes from automatic UI updates, a coherent API, and the operators.
+It works directly with Svelte. All you need to do is add a `$` in front of the collection when you use it in the HTML part. It removes the need to re-assign the array every time anything changes it, even in other components. Svelte is automatically notified about changes and automatically update the UI. You only need to call `add()` or `remove()` on the collection.
 
 Example
 =======
@@ -28,10 +24,10 @@ Show only those items which are not already purchased, i.e. only offer new stuff
     var shopItems = availableItems.subtract(installedItems);
 
     <div class="shop">
-    {#each $shopItems as item (item.id) }
+    {#each $shopItems.each as item (item.id) }
       <div class="item">item.name</div>
     {/each}
-    <div>
+    </div>
 
 That's all. When items are added to `availableItems` later, they automatically appear in the list UI, *unless* they are in `installedItems`. `shopItems` will be automatically updated and displayed, without further application code.
 
