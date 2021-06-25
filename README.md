@@ -311,10 +311,12 @@ All operators observe the original collections they are constructed from, and ad
   * @returns {`Collection`} Does not preserve order.
 
 ##### `sortColl(coll, sortFunc)`
-  * Returns a new collection that is sorted based on the `sortFunc`.
-  * TODO
+  * Returns a new collection that is sorted using the `sortFunc`.
   * @param coll {`Collection`}
-  * @param sortFunc(a {`Item`}, b {`Item`}) returns {`Boolean`} a > b
+  * @param sortFunc(a {`Item`}, b {`Item`}) returns {`Boolean`} a < b
+  *     If true: itemA before itemB.
+  *     If false: itemB before itemA.
+  *     Note: The result is boolean, not a number like `compareFunc` used by `Array.sort()`.
   * @returns {`Collection`}
 
 Implementation
