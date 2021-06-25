@@ -263,11 +263,11 @@ class Collection {
   }
 
   /**
-   * @param sortFunc {Function(item)} like Array.sort()
+   * @param sortFunc {Function(itemA, itemB): boolean} @see SortedCollection
    * @returns {Array of items} sorted by |sortFunc|
    */
   sort(sortFunc) {
-    return sortColl(this, sortFunc);
+    return new SortedCollection(this, sortFunc);
   }
 
 
@@ -766,7 +766,7 @@ class SetColl extends Collection {
    * @param item {Object}
    */
   add(item) {
-    var added = _addWithoutObserver(item);
+    var added = this._addWithoutObserver(item);
     if (added) {
       this._notifyAdded([item], this);
     }
@@ -1298,6 +1298,42 @@ class MapToCollection extends ArrayColl {
   }
 }
 
+/**
+ * Returns a new collection that is sorted using the `sortFunc`.
+ *
+ * @param source {Collection}   Another collection that is to be sorted
+ * @param sortFunc {Function(itemA, itemB): boolean} itemA <= itemB
+ *     If true: itemA before itemB.
+ *     If false: itemB before itemA.
+ *     Note: The result is boolean, not a number like `compareFunc` used by `Array.sort()`.
+ */
+class SortedCollection extends ArrayColl {
+  constructor(source, sortFunc) {
+    super();
+    assert(typeof(sortFunc) == "function", "must be a function");
+    assert(source instanceof Collection, "must be a Collection");
+    this._source = source;
+    this._sortFunc = sortFunc;
+
+    // add initial contents
+    this.addAll(source.contents.sort((a, b) => sortFunc(a, b) ? -1 : 1));
+
+    source.registerObserver(this);
+  }
+
+  // Implement CollectionObserver
+  added(items) {
+    // TODO re-implement by sorting only the new items,
+    // then call the observer for those only (all at once)
+    this.removeAll(source.contents);
+    this.addAll(source.contents.sort((a, b) => sortFunc(a, b) ? -1 : 1));
+  }
+
+  removed(items) {
+    this.removeAll(items);
+  }
+}
+
 
 /**
  * Has only those items that are in both coll1 and in coll2.
@@ -1344,11 +1380,11 @@ class IntersectionCollection extends SetColl {
  *
  * @param coll {Collection}
  * @param sortFunc(a {Item}, b {Item})
- *     returns {Boolean} a > b // TODO stable sort? {Integer: -1: <, 0: =, 1: >}
+ *     returns {Boolean} a < b // TODO stable sort? {Integer: -1: <, 0: =, 1: >}
  * @returns {Collection}
  */
 function sortColl(coll, sortFunc) {
-  throw new "not yet implemented"
+  return new SortedCollection(this, sortFunc);
 }
 
 
