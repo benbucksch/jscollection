@@ -2,7 +2,7 @@
   "name": "svelte-collections",
   "fullName": "Svelte Collections",
   "description": "Collections like Array, Set, Map, with operators and observers, for Svelte",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "main": "self-contained.js",
   "license": "MIT",
   "author": "Ben Bucksch"
