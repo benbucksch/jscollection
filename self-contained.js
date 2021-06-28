@@ -1282,8 +1282,8 @@ class SortedCollection extends ArrayColl {
   added(items) {
     // TODO re-implement by sorting only the new items,
     // then call the observer for those only (all at once)
-    this.removeAll(source.contents);
-    this.addAll(source.contents.sort((a, b) => sortFunc(a, b) ? -1 : 1));
+    this.removeAll(this._source.contents);
+    this.addAll(this._source.contents.sort((a, b) => this._sortFunc(a, b) ? -1 : 1));
   }
 
   removed(items) {
