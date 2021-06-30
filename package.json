@@ -2,7 +2,8 @@
   "name": "recollections",
   "fullName": "JS Collections",
   "description": "Collections like Array, Set, Map, with operators and observers, for reactive applications",
-  "version": "0.1.2",
+  "version": "0.1.4",
+  "main": "index.js",
   "license": "MIT",
   "author": "Ben Bucksch"
 }
