@@ -1,31 +1,33 @@
-Author: Ben Bucksch
-
-JavaScript Collections
+JavaScript Collections for Svelte
 ===================
 
-JS Collections provides a coherent set of collection/list classes. They form a powerful, yet lean system to design component APIs and plug different modules together between backend logic and UI. Like LEGO Technic. It simplifes application code with list operators and automatic updates.
+[Recollections](https://www.npmjs.com/package/recollections) provides a coherent set of collection/list classes. They form a powerful, yet lean system to design component APIs and plug different modules together between backend logic and UI. Like LEGO Technic. It simplifes application code with list operators and automatic updates.
 
 This is mostly about 3 aspects:
 * **Common API** for various collection types (array, set, map, OrderedMap, DOM list etc.), similar to java.util.Collection.
-* **Observers** to notify about changes, allowing automatic updates
+* **Observers** to notify about changes, allowing automatic UI updates in Svelte
 * **Operators** for whole lists, like concat, merge, substract, intersect etc..
 
 These aspects work together: Operation results are observable and change when the underlying operand collections change. Operations can be chained. All collection types support all operations.
 
 That means you can have a `shopItems` collection defined as the result of `installedItems` subtracted from `availableItems` . When you show the `shopItems`, the user sees only those items that are not yet installed. Now, as soon as an item is added to `installedItems`, it automatically disappears from the shop UI - immediately, without you having to write any extra code in the UI to support these updates. You don't have to install observers to `installedItems`, because the subtract operator already does that. If your list UI component observes list changes using the collection API here, you don't need any UI update wiring at all. Its all calculated and updated automatically. The `installedItems` can be managed by a backend module - completely independently from the UI. This allows you to decouple logic from the UI.
 
-The real value comes from a coherent API and base functionality that can be used in other APIs.  It removes the need for getItemList(), addItem()/removeItem(), addObserver()/removeObserver(), load(callback) functions in your API, and allows modules to work together. If each API uses a slightly different API to add/remove items, not only does the programmer have to learn each API, but he also has to do the plumbing between the components all manually. This gets particularly tedious as there need to be dynamic updates from one component to another, e.g. data to UI or pref dialog to main UI.
+It works directly with Svelte. All you need to do is add a `$` in front of the collection when you use it in the HTML part. It removes the need to re-assign the array every time anything changes it, even in other components. Svelte is automatically notified about changes and automatically update the UI. You only need to call `add()` or `remove()` on the collection.
 
 Example
 =======
 
-Show only those items which are not already purchased, i.e. only offer new stuff
+Show only those items which are not already purchased, i.e. only offer new stuff:
 
-    var availableItems = new ArrayColl([ itemA, itemB ]);
-    var installedItems = getInstalledItems(path);
+    var availableItems = await getItemsFromServer(); // returns ArrayColl
+    var installedItems = new ArrayColl([ itemA, itemC ]);
     var shopItems = availableItems.subtract(installedItems);
-    var listbox = E("itemsList");
-    listbox.showCollection(shopItems);
+
+    <div class="shop">
+    {#each $shopItems.each as item (item.id) }
+      <div class="item">item.name</div>
+    {/each}
+    </div>
 
 That's all. When items are added to `availableItems` later, they automatically appear in the list UI, *unless* they are in `installedItems`. `shopItems` will be automatically updated and displayed, without further application code.
 

@@ -1,7 +1,7 @@
 {
-  "name": "recollections",
-  "fullName": "JS Collections",
-  "description": "Collections like Array, Set, Map, with operators and observers, for reactive applications",
+  "name": "svelte-collections",
+  "fullName": "Svelte Collections",
+  "description": "Collections like Array, Set, Map, with operators and observers, for Svelte",
   "version": "0.1.4",
   "main": "index.js",
   "license": "MIT",
