@@ -324,31 +324,11 @@ All operators observe the original collections they are constructed from, and ad
 Implementation
 ==============
 
-DONE
-* Ben Bucksch provided API, base implementation, Array, Set, Map, and operators
-* Code documentation using the [JSDoc conventions](http://code.google.com/intl/en/closure/compiler/docs/js-for-compiler.html).
-
 TODO
-* sort operator
 * OrderedMap
+* WeapMap, WeakSet
 * UI list elements that accept these collections
 * Backend APIs emit these collections
 
 Code / download
 * `git clone https://github.com/benbucksch/jscollection`
-
-Feedback
-----------
-
-### Comparison of items
-How to specify identity and sorting for items, e.g. "if `id` property matches, it's the same item" and "sort on `name` property" or "if a.name > b.name, then a > b"
-
-Options:
-* base class for items -- convenient, but doesn't allow to collect objects not supporting this API, also doesn't allow to specify different sorting based on situation
-* Operators and Set and Ordered* collections take functions that can compare the objects -- cumbersome, because it needs to be specified for every use
-
-* specify `id` and `sortBy` properties, or -- more convenient:
-* specify `isSameObject()` and `isGreaterThan()` functions - more flexible
-
-### Weak references
-* Leveraging [WeakMap](https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/WeakMap)  should be considered.
