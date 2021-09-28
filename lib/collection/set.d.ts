@@ -2,12 +2,15 @@ import type { Collection } from '../api';
 
 declare class SetColl<Item> extends Collection<Item> {
   constructor();
-  readonly size: number;
-  delete(item: Item): void;
-  has(item: Item): boolean;
+  private _addWithoutObserver(item: Item);
+  private _removeWithoutObserver(item: Item);
+
+  // JS Set
   values(): { next: () => { value: Item, done: boolean} };
   keys(): { next: () => { value: Item, done: boolean} };
   entries(): { next: () => { value: Item, done: boolean} };
-  private _addWithoutObserver(item: Item);
-  private _removeWithoutObserver(item: Item);
+  // <https://github.com/microsoft/TypeScript/blob/main/src/lib/es2015.collection.d.ts>
+  readonly size: number;
+  delete(value: Item): boolean;
+  has(value: Item): boolean;
 }

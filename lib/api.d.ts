@@ -16,10 +16,10 @@ declare class Collection<Item> {
   clear(): void;
   readonly length: number;
   readonly isEmpty: boolean;
-  contains(item: Item): boolean;
   readonly contents: Array<Item>;
   readonly each: Array<Item>;
   readonly first: Item;
+  contains(item: Item): boolean;
   getIndex(i: number): Item;
   getIndexRange(i: number, length: number): Item;
   forEach(callback: (item: Item) => void): void;
@@ -41,7 +41,7 @@ declare class Collection<Item> {
   subscribe(subscription: (value: Item) => void): (() => void);
 }
 
-declare class KeyValueCollection<Item> extends Collection<Item> {
+declare class KeyValueCollection<Key, Item> extends Collection<Item> {
   constructor();
   set(key: Key, item: Item): void;
   get(key: Key): Item;
@@ -49,7 +49,6 @@ declare class KeyValueCollection<Item> extends Collection<Item> {
   containsKey(key: Key): boolean;
   getKeyForValue(item: Item): Key;
 }
-type Key = number | string;
 
 declare class CollectionObserver<Item> {
   constructor();
