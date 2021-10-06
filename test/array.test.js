@@ -246,7 +246,7 @@ test('Array reduce', () => {
   let array = a.contents;
   let result = a.reduce((prev, item) => prev + ", " + item, "start");
   let resultArray = array.reduce((prev, item) => prev + ", " + item, "start");
-  expect(result.contents).toEqual(resultArray);
+  expect(result).toEqual(resultArray);
 });
 
 test('Array reduceRight', () => {
@@ -254,5 +254,5 @@ test('Array reduceRight', () => {
   let array = a.contents;
   let result = a.reduceRight((prev, item) => prev + ", " + item, "start");
   let resultArray = array.reduceRight((prev, item) => prev + ", " + item, "start");
-  expect(result.contents).toEqual(resultArray);
+  expect(result).toEqual(resultArray);
 });
