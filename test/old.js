@@ -1,0 +1,4 @@
+
+exports.common = function(test)
+{
+}
