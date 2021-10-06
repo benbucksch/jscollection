@@ -1,4 +1,0 @@
-
-exports.common = function(test)
-{
-}
