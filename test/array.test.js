@@ -1,11 +1,10 @@
 import { ArrayColl } from '..';
 
-
 test('Array basics', () => {
   let a = new ArrayColl();
   a.add("a");
   a.add("b");
-  a.add("c");
+  a.push("c"); // alias for add()
   let el = "d";
   a.add(el);
   expect(a.length).toBe(4);
@@ -17,6 +16,7 @@ test('Array basics', () => {
   // KeyValue of ArrayColl
   expect(a.get(0)).toBe("a");
   expect(a.get(2)).toBe("c");
+  expect(a.at(2)).toBe("c");
   a.set(2, "c2");
   expect(a.length).toBe(3);
   expect(a.contents.length).toBe(a.length);

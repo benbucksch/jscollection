@@ -22,7 +22,6 @@ declare class ArrayColl<Item> extends KeyValueCollection<number, Item> implement
   toString(): string;
   toLocaleString(): string;
   pop(): Item | undefined;
-  push(...items: ArrayColl<Item>): number;
   join(separator?: string): string;
   reverse(): ArrayColl<Item>;
   shift(): Item | undefined;
