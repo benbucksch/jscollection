@@ -10,8 +10,10 @@ function newArray() {
   return a;
 }
 
-test('Array add, remove, set, get', () => {
+test('Array add, remove', () => {
   let a = newArray();
+  expect(a.length).toBe(5);
+
   a.push("d"); // alias for add()
   let el = "e";
   a.add(el);
@@ -21,8 +23,12 @@ test('Array add, remove, set, get', () => {
   a.remove("d");
   expect(a.length).toBe(5);
   expect(a.contents.length).toBe(a.length);
+});
 
-  // KeyValue of ArrayColl
+test('Array set, get', () => {
+  let a = newArray();
+  expect(a.length).toBe(5);
+
   expect(a.get(0)).toBe("a");
   expect(a.get(2)).toBe("c");
   expect(a.at(2)).toBe("c");
@@ -37,15 +43,29 @@ test('Array add, remove, set, get', () => {
   expect(a.contents.length).toBe(a.length);
 });
 
-test('Array push, pop, shift, unshift', () => {
+test('Array push, pop', () => {
   let a = newArray();
   let before = a.contents;
 
   a.push(a.pop());
   expect(a.contents).toMatchObject(before);
+});
+
+test('Array shift, unshift', () => {
+  let a = newArray();
+  let before = a.contents;
 
   a.unshift(a.shift());
   expect(a.contents).toMatchObject(before);
+});
+
+test('Array clear', () => {
+  let a = newArray();
+  expect(a.length).toBeGreaterThan(0);
+
+  a.clear();
+  expect(a.length).toBe(0);
+  expect(a.contents.length).toBe(a.length);
 });
 
 test('Array search functions', () => {
