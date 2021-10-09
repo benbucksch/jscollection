@@ -1,7 +1,7 @@
 import type { Collection } from '../api';
-import type { ArrayColl } from '../collection/array';
+import type { TransformedCollection } from './transform';
 
 export function sortColl<Item>(coll: Collection<Item>, sortFunc: (a: Item, b: Item) => boolean): SortedCollection<Item>;
-declare class SortedCollection<Item> extends ArrayColl<Item> {
+declare class SortedCollection<Item> extends TransformedCollection<Item> {
   constructor(source: Collection<Item>, sortFunc: (a: Item, b: Item) => boolean);
 }

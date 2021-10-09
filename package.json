@@ -5,6 +5,7 @@
   "version": "0.1.6",
   "main": "index.js",
   "type": "module",
+  "types": "index.d.ts",
   "scripts": {
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
   },
