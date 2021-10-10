@@ -6,14 +6,27 @@ declare class MapColl<Key, Item> extends KeyValueCollection<Key, Item> {
   contentKeyValues(): any;
 
   // JS Map
-  values(): { next: () => { value: Item, done: boolean} };
-  keys(): { next: () => { value: Item, done: boolean} };
-  entries(): { next: () => { value: Item, done: boolean} };
   // <https://github.com/microsoft/TypeScript/blob/main/src/lib/es2015.collection.d.ts>
   readonly size: number;
   clear(): void;
   delete(key: Key): boolean;
   get(key: Key): Item | undefined;
   has(key: Key): boolean;
-  forEach(callbackfn: (value: Item, key: Key) => void): void;
+  /**
+   * @param callback Will be called once for each element in the collection.
+   */
+  forEach(callback: (value: Item, key: Key) => void): void;
+  // <https://github.com/microsoft/TypeScript/blob/main/src/lib/es2015.iterable.d.ts>
+  /**
+   * @returns All items of the collection as iterator.
+   */
+  values(): IterableIterator<Item>;
+  /**
+   * @returns All key of the collection as iterator.
+   */
+  keys(): IterableIterator<Key>;
+  /**
+   * @returns All entries of the collection, each with key and item, as iterator.
+   */
+  entries(): IterableIterator<[Key, Item]>;
 }
