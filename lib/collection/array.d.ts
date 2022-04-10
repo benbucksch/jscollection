@@ -218,4 +218,6 @@ declare class ArrayColl<Item> extends KeyValueCollection<number, Item> {
    * @returns All entries of the array collection, each with index and item, as iterator.
    */
   entries(): IterableIterator<[number, Item]>;
+
+  subscribe(subscription: (value: ArrayColl<Item>) => void): (() => void);
 }

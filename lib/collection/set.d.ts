@@ -25,4 +25,6 @@ declare class SetColl<Item> extends Collection<Item> {
    * Does not make sense for Set. Call `values()` instead, or use `for..of`.
    */
   entries(): IterableIterator<[Item, Item]>;
+
+  subscribe(subscription: (value: SetColl<Item>) => void): (() => void);
 }

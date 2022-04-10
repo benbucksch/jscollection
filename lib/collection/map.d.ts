@@ -1,4 +1,4 @@
-import type {  KeyValueCollection } from '../api';
+import type { KeyValueCollection } from '../api';
 
 declare class MapColl<Key, Item> extends KeyValueCollection<Key, Item> {
   constructor();
@@ -29,4 +29,6 @@ declare class MapColl<Key, Item> extends KeyValueCollection<Key, Item> {
    * @returns All entries of the collection, each with key and item, as iterator.
    */
   entries(): IterableIterator<[Key, Item]>;
+
+  subscribe(subscription: (value: MapColl<Key, Item>) => void): (() => void);
 }

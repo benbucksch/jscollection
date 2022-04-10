@@ -1,10 +1,10 @@
-import type{ FilteredCollection } from './operator/filter';
-import type{ MapToCollection } from './operator/mapTo';
-import type{ SortedCollection } from './operator/sort';
-import type{ AdditionCollection } from './operator/add-merge';
-import type{ AdditionCollectionWithDups } from './operator/add-concat';
-import type{ SubtractCollection } from './operator/subtract';
-import type{ IntersectionCollection } from './operator/intersection';
+import type { FilteredCollection } from './operator/filter';
+import type { MapToCollection } from './operator/mapTo';
+import type { SortedCollection } from './operator/sort';
+import type { AdditionCollection } from './operator/add-merge';
+import type { AdditionCollectionWithDups } from './operator/add-concat';
+import type { SubtractCollection } from './operator/subtract';
+import type { IntersectionCollection } from './operator/intersection';
 
 declare class Collection<Item> {
   constructor();
@@ -247,7 +247,7 @@ declare class Collection<Item> {
   private _notifyAdded(items: Array<Item>): void;
   private _notifyRemoved(items: Array<Item>): void;
   private _notifyChanged(): void;
-  subscribe(subscription: (value: Item) => void): (() => void);
+  subscribe(subscription: (value: Collection<Item>) => void): (() => void);
 }
 
 declare class KeyValueCollection<Key, Item> extends Collection<Item> {
@@ -257,6 +257,7 @@ declare class KeyValueCollection<Key, Item> extends Collection<Item> {
   removeKey(key: Key): void;
   containsKey(key: Key): boolean;
   getKeyForValue(item: Item): Key;
+  subscribe(subscription: (value: KeyValueCollection<Key, Item>) => void): (() => void);
 }
 
 declare class CollectionObserver<Item> {
