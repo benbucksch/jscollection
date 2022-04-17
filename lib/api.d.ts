@@ -147,7 +147,7 @@ declare class Collection<Item> {
    *
    * @param callbackfn A function that accepts up to three arguments. The map method calls the callbackfn function one time for each element in the array.
    */
-  map(mapFunc: (item: Item) => Item): MapToCollection<Item>;
+  map<Result>(mapFunc: (item: Item) => Result): MapToCollection<Item, Result>;
   /**
    * Sorts the collection and returns a new collection with the result.
    *
