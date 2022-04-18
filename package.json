@@ -10,7 +10,7 @@
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
   },
   "devDependencies": {
-    "jest": "^27.2.4"
+    "jest": "^27.5.1"
   },
   "author": "Ben Bucksch",
   "license": "MIT"
