@@ -68,6 +68,28 @@ test('Array clear', () => {
   expect(a.contents.length).toBe(a.length);
 });
 
+test('Array replace', () => {
+  let a = new ArrayColl(["a", "b", "c", "d"]);
+  expect.assertions(7);
+  expect(a.length).toBe(4);
+
+  a.registerObserver({
+    added: (items, coll) => {
+      expect(items.length).toBe(1);
+      expect(items[0]).toBe("e");
+      expect(coll).toBe(a);
+      done();
+    },
+    removed: (items, coll) => {
+      expect(items.length).toBe(1);
+      expect(items[0]).toBe("a");
+      expect(coll).toBe(a);
+    },
+  });
+  a.replaceAll(["b", "c", "d", "e"]);
+});
+
+
 test('Array search functions', () => {
   let a = newArray();
   expect(a.length).toBe(5);
