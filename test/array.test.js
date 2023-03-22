@@ -68,7 +68,7 @@ test('Array clear', () => {
   expect(a.contents.length).toBe(a.length);
 });
 
-test('Array replace', () => {
+test('Array replace', done => {
   let a = new ArrayColl(["a", "b", "c", "d"]);
   expect.assertions(7);
   expect(a.length).toBe(4);
@@ -88,7 +88,6 @@ test('Array replace', () => {
   });
   a.replaceAll(["b", "c", "d", "e"]);
 });
-
 
 test('Array search functions', () => {
   let a = newArray();
@@ -215,6 +214,31 @@ test('Array slice 3', () => {
   let result = a.slice(2);
   let resultArray = array.slice(2);
   expect(result.contents).toMatchObject(resultArray);
+});
+
+test('Array getIndexRange(1, ...) ', () => {
+  let a = newArray();
+  expect(a.length).toBeGreaterThan(4);
+  let array = a.contents;
+  let result = a.getIndexRange(1, 3);
+  let resultArray = array.slice(1, 4);
+  expect(result).toMatchObject(resultArray);
+});
+
+test('Array getIndexRange(0, ...) ', () => {
+  let a = newArray();
+  expect(a.length).toBeGreaterThan(4);
+  let array = a.contents;
+  let result = a.getIndexRange(0, 3);
+  let resultArray = array.slice(0, 3);
+  expect(result).toMatchObject(resultArray);
+});
+
+test('Array getIndexRange(..., 0) ', () => {
+  let a = newArray();
+  expect(a.length).toBeGreaterThan(4);
+  let result = a.getIndexRange(3, 0);
+  expect(result.length).toBe(0);
 });
 
 test('Array fill 1', () => {
