@@ -209,13 +209,13 @@ declare class ArrayColl<Item> extends KeyValueCollection<number, Item> {
   /**
    * @returns All items of the collection as iterator.
    */
-  values(): IterableIterator<Item>;
+  values(): Collection<Item>;
   /**
    * @returns All indexes of the array collection as iterator.
    */
-  keys(): IterableIterator<number>;
+  keys(): Collection<number>;
   /**
    * @returns All entries of the array collection, each with index and item, as iterator.
    */
-  entries(): IterableIterator<[number, Item]>;
+  entries(): Collection<[number, Item]>;
 }

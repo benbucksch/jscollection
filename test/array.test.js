@@ -128,11 +128,11 @@ test('Array forEach', () => {
 test('Array iterators', () => {
   let a = newArray();
   let values = a.values();
-  expect(values.next().value).toBe(a.first);
+  expect(values.first).toBe(a.first);
   let keys = a.keys();
-  expect(keys.next().value).toBe(0);
+  expect(keys.first).toBe(0);
   let entries = a.entries();
-  expect(entries.next().value[1]).toBe(a.first);
+  expect(entries.first[1]).toBe(a.first);
 });
 
 test('Array toString', () => {

@@ -83,9 +83,9 @@ test('Map forEach', () => {
 test('Map iterators', () => {
   let a = newMap();
   let values = a.values();
-  expect(values.next().value).toBe(a.first);
+  expect(values.first).toBe(a.first);
   let keys = a.keys();
-  expect(keys.next().value).toBe("a");
+  expect(keys.first).toBe("a");
   let entries = a.entries();
-  expect(entries.next().value[1]).toBe(a.first);
+  expect(entries.first[1]).toBe(a.first);
 });

@@ -20,13 +20,13 @@ declare class MapColl<Key, Item> extends KeyValueCollection<Key, Item> {
   /**
    * @returns All items of the collection as iterator.
    */
-  values(): IterableIterator<Item>;
+  values(): Collection<Item>;
   /**
    * @returns All key of the collection as iterator.
    */
-  keys(): IterableIterator<Key>;
+  keys(): Collection<Key>;
   /**
    * @returns All entries of the collection, each with key and item, as iterator.
    */
-  entries(): IterableIterator<[Key, Item]>;
+  entries(): Collection<[Key, Item]>;
 }
