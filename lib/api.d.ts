@@ -165,18 +165,32 @@ declare class Collection<Item> {
    */
   sort(sortFunc: (a: Item, b: Item) => boolean): SortedCollection<Item>;
   /**
-   * operator +
-   * Combines two collections, by appending the another colleciton.
-   * Returns a collection that contains all values from both collections.
-   * Duplicates are allowed. If the same item is in both collections, it will be added twice.
-   *
-   * @see merge() if you do not want duplicates
+   * Sorts the collection by a value and returns a new collection with the result.
    *
    * Once items are later added or removed from the source collections, they will also be added/removed accordingly to the result collection, as long as the collection lives.
+   * Unlike JS Array.sort(), this function does not alter the source collection.
    *
-   * @param otherColl Additional items from another collection to add to the end of the collection.
-   * @returns A new collection which contains the items of both source collections.
+   * @example
+   * ```ts
+   * new ArrayColl([{name: 'a'},{name: 'b'},{name: 'b'},{name: 'd'}]).sortBy(o => o.name)
+   * ```
+   *
+   * @param valueFn Function used to get the property to compare.
    */
+  sortBy(valueFn: (o: Item) => any): SortedCollection<Item>;
+  /**
+  * operator +
+  * Combines two collections, by appending the another colleciton.
+  * Returns a collection that contains all values from both collections.
+  * Duplicates are allowed. If the same item is in both collections, it will be added twice.
+  *
+  * @see merge() if you do not want duplicates
+  *
+  * Once items are later added or removed from the source collections, they will also be added/removed accordingly to the result collection, as long as the collection lives.
+  *
+  * @param otherColl Additional items from another collection to add to the end of the collection.
+  * @returns A new collection which contains the items of both source collections.
+  */
   concat(otherColl: Collection<Item>): AdditionCollectionWithDups<Item>;
   /**
    * Combines two collections, by merging the items, without duplicates.

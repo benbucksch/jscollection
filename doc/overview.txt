@@ -261,8 +261,8 @@ Options:
 * base class for items -- convenient, but doesn't allow to collect objects not supporting this API, also doesn't allow to specify different sorting based on situation
 * Operators and Set and Ordered* collections take functions that can compare the objects -- cumbersome, because it needs to be specified for every use
 
-* specify id and sortBy properties or -- more convenient
-* specify isSameObject() and isGreaterThan() functions - more flexible
+* specify id property (more convenient) or
+* specify isSameObject() and isGreaterThan() functions (more flexible)
 
 == Naming ==
 The [https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Set Set] object is available in future versions of Firefox and thus this name should not be used.
