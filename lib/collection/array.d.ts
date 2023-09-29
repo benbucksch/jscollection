@@ -50,6 +50,11 @@ declare class ArrayColl<Item> extends KeyValueCollection<number, Item> {
    */
   pop(): Item | undefined;
   /**
+   * Appends new items to the end of the collection, and returns the new length of the collection.
+   * @param items Elements to append to the end of the collection.
+   */
+  push(...items: Item[]): number;
+  /**
    * Appends all the elements of the collection collection into a string, separated by the specified separator string.
    * @param separator A string used to separate one element of the collection from the next in the resulting string. If omitted, the elements are separated with a `,` comma.
    */

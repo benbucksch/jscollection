@@ -15,13 +15,7 @@ declare class Collection<Item> {
    */
   add(item: Item): void;
   /**
-   * Appends a new item to the collection.
-   * Alias for `add()`
-   * @param item What to add to the collection.
-   */
-  push(item: Item): void;
-  /**
-   * Removes the given item from the collection.
+   * Removes one item from the collection.
    * @param item What to remove from the collection.
    */
   remove(item: Item): void;
@@ -270,6 +264,15 @@ declare class Collection<Item> {
   private _notifyRemoved(items: Array<Item>): void;
   private _notifyChanged(): void;
   subscribe(subscription: (value: this) => void): (() => void);
+  // Aliases for compat with JS Array.
+  /**
+   * Alias for `add()`
+   */
+  push(item: Item): void;
+  /**
+   * Alias for `contains()`
+   */
+  includes(item: Item): boolean;
 }
 
 declare class KeyValueCollection<Key, Item> extends Collection<Item> {
