@@ -58,7 +58,11 @@ test('Map clear', () => {
 
 test('Map search functions', () => {
   let a = newMap();
+  expect(a.size).toBe(4);
   expect(a.has("b")).toBe(true);
+  expect(a.contains("c1")).toBe(false);
+  expect(a.contains("c2")).toBe(true);
+  expect(a.getKeyForValue("c2")).toBe("c");
   expect(a.find(item => item == "b1")).toBe("b1");
 });
 
