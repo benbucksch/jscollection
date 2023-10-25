@@ -67,6 +67,8 @@ test('Set forEach', () => {
 
 test('Set iterators', () => {
   let a = newSet();
+  let iter = a[Symbol.iterator]();
+  expect(iter.next().value).toBe(a.first);
   let values = a.values();
   expect(values.next().value).toBe(a.first);
   let entries = a.entries();

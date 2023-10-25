@@ -149,15 +149,14 @@ test('Array forEach', () => {
 
 test('Array iterators', () => {
   let a = newArray();
+  let iter = a[Symbol.iterator]();
+  expect(iter.next().value).toBe(a.first);
   let values = a.values();
-  expect(values.first).toBe(a.first);
-  expect(values.last).toBe(a.last);
+  expect(values.next().value).toBe(a.first);
   let keys = a.keys();
-  expect(keys.first).toBe(0);
-  expect(keys.last).toBe(4);
+  expect(keys.next().value).toBe(0);
   let entries = a.entries();
-  expect(entries.first[1]).toBe(a.first);
-  expect(entries.last[1]).toBe(a.last);
+  expect(entries.next().value[1]).toBe(a.first);
 });
 
 test('Array toString', () => {

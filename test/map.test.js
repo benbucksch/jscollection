@@ -86,13 +86,12 @@ test('Map forEach', () => {
 
 test('Map iterators', () => {
   let a = newMap();
+  let iter = a[Symbol.iterator]();
+  expect(iter.next().value).toBe(a.first);
   let values = a.values();
-  expect(values.first).toBe(a.first);
-  expect(values.last).toBe(a.last);
+  expect(values.next().value).toBe(a.first);
   let keys = a.keys();
-  expect(keys.first).toBe("a");
-  expect(keys.last).toBe("d");
+  expect(keys.next().value).toBe("a");
   let entries = a.entries();
-  expect(entries.first[1]).toBe(a.first);
-  expect(entries.last[1]).toBe(a.last);
+  expect(entries.next().value[1]).toBe(a.first);
 });
