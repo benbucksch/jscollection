@@ -270,22 +270,20 @@ add, subtract, and, xor - compare [Set theory](http://en.wikipedia.org/wiki/Set_
 
 All operators observe the original collections they are constructed from, and adapt the result based on changes, and notify any observers that are registered on the operator result collection.
 
-##### `concatColl(coll1, coll2)`
+##### `concatColl(coll1, coll2, ...)`
   * operator +
   * Returns a collection that contains all values from coll1 and coll2.
   * If the same item is in both coll1 and coll2, it will be added twice.
   * The result is simply coll2 appended to coll1.
-  * @param coll1 {`Collection`}
-  * @param coll2 {`Collection`}
+  * @param coll, coll, coll, ...  {`Collection`}
   * @returns {`Collection`} Preserves order
 
-##### `mergeColl(coll1, coll2)`
+##### `mergeColl(coll1, coll2, ...)`
   * operator +
   * [Union](http://en.wikipedia.org/wiki/Union_(set_theory))
   * Returns a collection that contains all values from coll1 and coll2.
   * If the same item is in both coll1 and coll2, it will be added only once.
-  * @param coll1 {`Collection`}
-  * @param coll2 {`Collection`}
+  * @param coll, coll, coll, ... {`Collection`}
   * @returns {`Collection`} Does not preserve order.
 
 ##### `subtractColl(collBase, collSubtract)`
