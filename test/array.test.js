@@ -62,10 +62,14 @@ test('Array shift, unshift', () => {
 test('Array clear', () => {
   let a = newArray();
   expect(a.length).toBeGreaterThan(0);
+  expect(a.isEmpty).toBe(false);
+  expect(a.hasItems).toBe(true);
 
   a.clear();
   expect(a.length).toBe(0);
   expect(a.contents.length).toBe(a.length);
+  expect(a.isEmpty).toBe(true);
+  expect(a.hasItems).toBe(false);
 });
 
 test('Array replace', done => {
@@ -129,10 +133,13 @@ test('Array iterators', () => {
   let a = newArray();
   let values = a.values();
   expect(values.first).toBe(a.first);
+  expect(values.last).toBe(a.last);
   let keys = a.keys();
   expect(keys.first).toBe(0);
+  expect(keys.last).toBe(4);
   let entries = a.entries();
   expect(entries.first[1]).toBe(a.first);
+  expect(entries.last[1]).toBe(a.last);
 });
 
 test('Array toString', () => {
