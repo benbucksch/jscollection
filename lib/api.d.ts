@@ -74,8 +74,12 @@ declare class Collection<Item> {
    */
   readonly isEmpty: boolean;
   /**
-   * @returns a copy of the collection contents as JS Array.
+   * @returnes true, if the collection contains items.
    */
+  readonly hasItems: boolean;
+  /**
+  * @returns a copy of the collection contents as JS Array.
+  */
   readonly contents: Array<Item>;
   /**
    * Convenience function for Svelte.
@@ -93,8 +97,12 @@ declare class Collection<Item> {
    */
   readonly first: Item;
   /**
-   * @returns true, if the collection has this item.
+   * @returns The last item in the collection
    */
+  readonly last: Item;
+  /**
+  * @returns true, if the collection has this item.
+  */
   contains(item: Item): boolean;
   /**
    * Note: For non-array collections, this may be very slow.

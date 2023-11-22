@@ -107,8 +107,12 @@ Base class for all lists.
   * @returns {`Integer`} (always >= 0)
 
 ##### `get isEmpty()`
+  * Whether there are no items in this list
+  * @returns {`Boolean`} true, if there are no items
+
+##### `get hasItems()`
   * Whether there are items in this list
-  * @returns {`Boolean`}
+  * @returns {`Boolean`} true, if there are items
 
 ##### `contains(item)`
   * Checks whether this item is in the list.
@@ -119,6 +123,16 @@ Base class for all lists.
   * If the list is ordered, the result of this function is ordered in the same way.
   * While the returned array is a copy, the items are not, so changes to the array do not affect the list, but changes to its items do change the items in the list.
   * @returns {`Array`} new JS array with all items
+
+##### `first`
+  * @returns {`Object`} The first item in the list
+
+##### `last`
+  * @returns {`Object`} The last item in the list
+
+##### `forEach(func)`
+  * Iterates over all items in the list.
+  * @returns {`Boolean`}
 
 ##### `forEach(func)`
   * Iterates over all items in the list.
