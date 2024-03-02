@@ -1,27 +1,27 @@
 import { ArrayColl } from '..';
 
 function newArray() {
-  let a = new ArrayColl();
-  a.add("a");
-  a.add("b");
-  a.add("c");
-  a.add("c");
-  a.add("d");
-  return a;
+  return ArrayColl.from(["a", "b", "c", "c", "d"]);
 }
 
 test('Array add, remove', () => {
   let a = newArray();
   expect(a.length).toBe(5);
 
-  a.push("d"); // alias for add()
+  a.push("d", "d"); // alias for addAll([...])
   let el = "e";
   a.add(el);
-  expect(a.length).toBe(7);
+  expect(a.length).toBe(8);
   expect(a.contents.length).toBe(a.length);
-  a.remove(el);
+  a.removeAll(["d", el]);
+  expect(a.length).toBe(6);
+  expect(a.contents.length).toBe(a.length);
   a.remove("d");
   expect(a.length).toBe(5);
+  expect(a.contents.length).toBe(a.length);
+  a.push("c");
+  a.removeEach("c");
+  expect(a.length).toBe(3);
   expect(a.contents.length).toBe(a.length);
 });
 
@@ -30,8 +30,9 @@ test('Array set, get', () => {
   expect(a.length).toBe(5);
 
   expect(a.get(0)).toBe("a");
-  expect(a.get(2)).toBe("c");
+  expect(a.getIndex(2)).toBe("c");
   expect(a.at(2)).toBe("c");
+  expect(a.getKeyForValue("a")).toBe(0);
   a.set(2, "c2");
   expect(a.length).toBe(5);
   expect(a.contents.length).toBe(a.length);
@@ -40,6 +41,9 @@ test('Array set, get', () => {
   expect(a.contents.length).toBe(a.length);
   a.set(100, "e");
   expect(a.length).toBe(101);
+  expect(a.contents.length).toBe(a.length);
+  a.removeKey(3);
+  expect(a.length).toBe(100);
   expect(a.contents.length).toBe(a.length);
 });
 
@@ -56,6 +60,9 @@ test('Array shift, unshift', () => {
   let before = a.contents;
 
   a.unshift(a.shift());
+  expect(a.contents).toMatchObject(before);
+
+  a.unshift(a.shift(), a.shift());
   expect(a.contents).toMatchObject(before);
 });
 
@@ -93,10 +100,21 @@ test('Array replace', done => {
   a.replaceAll(["b", "c", "d", "e"]);
 });
 
+test('Array isArrayColl', () => {
+  let a = newArray();
+  expect(ArrayColl.isArray(a)).toBe(true);
+  expect(ArrayColl.isArray([])).toBe(true);
+  expect(ArrayColl.isArray({})).toBe(false);
+  expect(ArrayColl.isArrayColl(a)).toBe(true);
+  expect(ArrayColl.isArrayColl([])).toBe(false);
+  expect(ArrayColl.isArrayColl({})).toBe(false);
+});
+
 test('Array search functions', () => {
   let a = newArray();
   expect(a.length).toBe(5);
 
+  expect(a.contains("b")).toBe(true);
   expect(a.includes("b")).toBe(true);
   expect(a.includes("b", 3)).toBe(false);
 
@@ -131,15 +149,14 @@ test('Array forEach', () => {
 
 test('Array iterators', () => {
   let a = newArray();
+  let iter = a[Symbol.iterator]();
+  expect(iter.next().value).toBe(a.first);
   let values = a.values();
-  expect(values.first).toBe(a.first);
-  expect(values.last).toBe(a.last);
+  expect(values.next().value).toBe(a.first);
   let keys = a.keys();
-  expect(keys.first).toBe(0);
-  expect(keys.last).toBe(4);
+  expect(keys.next().value).toBe(0);
   let entries = a.entries();
-  expect(entries.first[1]).toBe(a.first);
-  expect(entries.last[1]).toBe(a.last);
+  expect(entries.next().value[1]).toBe(a.first);
 });
 
 test('Array toString', () => {
@@ -309,8 +326,8 @@ test('Array flatMap', () => {
   let a = newArray();
   a.set(3, newArray().contents);
   let array = a.contents;
-  let result = a.flatMap(item => item + "test");
-  let resultArray = array.flatMap(item => item + "test");
+  let result = a.flatMap(item => item);
+  let resultArray = array.flatMap(item => item);
   expect(result.contents).toMatchObject(resultArray);
 });
 

@@ -23,6 +23,11 @@ test('Set add, remove', () => {
   a.delete("d"); // alias for remove()
   expect(a.length).toBe(2);
   expect(a.contents.length).toBe(a.length);
+  a.addAll(newSet());
+  expect(a.length).toBe(4);
+  a.removeAll(["c", "d"]);
+  expect(a.length).toBe(2);
+  expect(a.contents.length).toBe(a.length);
 });
 
 test('Set clear', () => {
@@ -35,7 +40,9 @@ test('Set clear', () => {
 
 test('Set search functions', () => {
   let a = newSet();
+  expect(a.size).toBe(4);
   expect(a.has("b")).toBe(true);
+  expect(a.contains("c")).toBe(true);
 
   expect(a.find(item => item == "b")).toBe("b");
 });
@@ -60,6 +67,8 @@ test('Set forEach', () => {
 
 test('Set iterators', () => {
   let a = newSet();
+  let iter = a[Symbol.iterator]();
+  expect(iter.next().value).toBe(a.first);
   let values = a.values();
   expect(values.next().value).toBe(a.first);
   let entries = a.entries();
