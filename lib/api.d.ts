@@ -114,7 +114,7 @@ declare class Collection<Item> {
    * @param length how many items to return
    * @returns the items at the given position
    */
-  getIndexRange(i: number, length: number): Item;
+  getIndexRange(i: number, length: number): Item[];
   // <https://github.com/microsoft/TypeScript/blob/main/src/lib/es5.d.ts>
   // Comments MIT license (c) Microsoft
   /**
