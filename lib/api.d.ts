@@ -282,6 +282,7 @@ declare class KeyValueCollection<Key, Item> extends Collection<Item> {
   removeKey(key: Key): void;
   containsKey(key: Key): boolean;
   getKeyForValue(item: Item): Key;
+  removeValue(item: Item): void;
 }
 
 declare class CollectionObserver<Item> {
