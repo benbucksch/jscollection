@@ -149,3 +149,26 @@ test('Merge with dynamic collection', done => {
   });
   colls.add(d);
 });
+
+test('Merge with updating dynamic collection members', () => {
+  let a = new ArrayColl();
+  let b = new ArrayColl();
+  let c = new ArrayColl();
+  let d = new ArrayColl();
+  let colls = new ArrayColl([a, b, c]);
+  let merged = mergeColls(colls);
+  colls.add(d);
+  a.add("a");
+  a.add("b");
+  a.add("c");
+  b.add("a");
+  b.add("b");
+  b.add("f");
+  c.add("a");
+  c.add("b");
+  c.add("i");
+  d.add("j");
+  d.add("a");
+  d.add("b");
+  expect(merged.length).toBe(6);
+});
