@@ -2,7 +2,7 @@
   "name": "svelte-collections",
   "fullName": "Svelte Collections",
   "description": "Collections like Array, Set, Map, with operators and observers, for Svelte",
-  "version": "1.1.21",
+  "version": "1.1.22",
   "main": "index.js",
   "type": "module",
   "types": "index.d.ts",
