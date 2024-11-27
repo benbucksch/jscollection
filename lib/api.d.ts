@@ -274,9 +274,9 @@ declare class Collection<Item> {
    * @param observer {CollectionObserver}
    */
   unregisterObserver(observer: CollectionObserver<Item>): void;
-  private _notifyAdded(items: Array<Item>): void;
-  private _notifyRemoved(items: Array<Item>): void;
-  private _notifyChanged(): void;
+  protected _notifyAdded(items: Array<Item>): void;
+  protected _notifyRemoved(items: Array<Item>): void;
+  protected _notifyChanged(): void;
   subscribe(subscription: (value: this) => void): (() => void);
   // Aliases for compat with JS Array.
   /**

@@ -3,8 +3,8 @@ import type { Collection, KeyValueCollection } from '../api';
 declare class ArrayColl<Item> extends KeyValueCollection<number, Item> {
   constructor(copyFrom?: Array<Item> | Collection<Item>);
   removeEach(item: Item): void;
-  private _addWithoutObserver(item: Item);
-  private _removeWithoutObserver(item: Item);
+  protected _addWithoutObserver(item: Item);
+  protected _removeWithoutObserver(item: Item);
 
   /**
    * @returns Whether the given object is a JS Array or ArrayColl.
