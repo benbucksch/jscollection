@@ -327,10 +327,13 @@ All operators observe the original collections they are constructed from, and ad
 ##### `sortColl(coll, sortFunc)`
   * Returns a new collection that is sorted using the `sortFunc`.
   * @param coll {`Collection`}
-  * @param sortFunc(a {`Item`}, b {`Item`}) returns {`Boolean`} a < b
-  *     If true: itemA before itemB.
-  *     If false: itemB before itemA.
-  *     Note: The result is boolean, not a number like `compareFunc` used by `Array.sort()`.
+ * @param sortFunc {`Function(itemA, itemB): number`}
+  *     Like `Array.sort()`:
+  *     If negative (`-1`): `itemA` before `itemB`
+  *     If positive (`1`): `itemB` before `itemA`
+  *     If `0`: `itemA` sorted identical to `itemB`
+  *     You can use `compareValues()` to compare strings,
+  *     numbers or `Date`s.
   * @returns {`Collection`}
 
 Implementation

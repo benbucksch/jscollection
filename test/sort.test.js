@@ -1,9 +1,9 @@
 import { ArrayColl } from '..';
+import { compareValues } from '../lib/operator/sort';
 
 test('sort', () => {
   let a = new ArrayColl(["h", "f", "d", "g", "b", "c", "b", "e"]);
-
-  let sorted = a.sort((a, b) => a < b);
+  let sorted = a.sort((a, b) => compareValues(a, b));
 
   let added = new ArrayColl();
   let removed = new ArrayColl();
@@ -17,18 +17,13 @@ test('sort', () => {
   });
 
   a.add("a");
+  a.add("e2");
+  a.add("i");
   a.remove("c");
 
-  /*
-  // swap the first two
-  let swap = a.get(0);
-  a.set(0, a.get(1));
-  a.set(1, swap);
-  */
-
-  expect(sorted.contents).toMatchObject(["a", "b", "b", "d", "e", "f", "g", "h"]);
+  expect(sorted.contents).toMatchObject(["a", "b", "b", "d", "e", "e2", "f", "g", "h", "i"]);
   expect(removed.contents).toMatchObject(["c"]);
-  expect(added.contents).toMatchObject(["a"]);
+  expect(added.contents).toMatchObject(["a", "e2", "i"]);
 });
 
 
@@ -50,16 +45,11 @@ test('sortBy', () => {
   });
 
   a.add({ name: "a" });
+  a.add({ name: "e2" });
+  a.add({ name: "i" });
   a.remove(c);
 
-  /*
-  // swap the first two
-  let swap = a.get(0);
-  a.set(0, a.get(1));
-  a.set(1, swap);
-  */
-
-  expect(sorted.contents.map(o => o.name)).toMatchObject(["a", "b", "b", "d", "e", "f", "g", "h"]);
+  expect(sorted.contents.map(o => o.name)).toMatchObject(["a", "b", "b", "d", "e", "e2", "f", "g", "h", "i"]);
   expect(removed.contents.map(o => o.name)).toMatchObject(["c"]);
-  expect(added.contents.map(o => o.name)).toMatchObject(["a"]);
+  expect(added.contents.map(o => o.name)).toMatchObject(["a", "e2", "i"]);
 });
