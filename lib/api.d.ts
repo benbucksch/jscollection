@@ -53,6 +53,20 @@ declare class Collection<Item> {
    * This may be a JS Array or a Collection.
    */
   removeAll(coll: Collection<Item> | Array<Item>): void;
+
+  /**
+   * Replaces all items in `coll` with this collection.
+   *
+   * @example
+   * ```js
+   * coll.replaceAll([ a, b, c, d ]);
+   * ```
+   *
+   * @param coll The new contents of the collection.
+   * This may be a JS Array or a Collection.
+   */
+  replaceAll(coll: Collection<Item> | Array<Item>): void;
+
   /**
    * Empties the collection and removes all items.
    *
