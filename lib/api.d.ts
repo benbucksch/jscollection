@@ -179,7 +179,7 @@ declare class Collection<Item> {
    * It returns true, if the first argument is less than the second argument, and false otherwise.
    * Unlike JS Array.sort(), the compare function returns boolean instead of -1/0/1.
    */
-  sort(sortFunc: (a: Item, b: Item) => boolean): SortedCollection<Item>;
+  sort(sortFunc: (a: Item, b: Item) => number): SortedCollection<Item>;
   /**
    * Sorts the collection by a value and returns a new collection with the result.
    *
