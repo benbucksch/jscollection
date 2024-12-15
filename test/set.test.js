@@ -74,3 +74,30 @@ test('Set iterators', () => {
   let entries = a.entries();
   expect(entries.next().value[1]).toBe(a.first);
 });
+
+test('Set copy constructor', () => {
+  let a = new SetColl(["a", "b", "c"]);
+  a.add("d");
+  expect(a.length).toBe(4);
+});
+
+test('Set replaceAll and copy constructor', done => {
+  let a = new SetColl(["a", "b", "c", "d"]);
+  expect.assertions(7);
+  expect(a.length).toBe(4);
+
+  a.registerObserver({
+    added: (items, coll) => {
+      expect(items.length).toBe(1);
+      expect(items[0]).toBe("e");
+      expect(coll).toBe(a);
+      done();
+    },
+    removed: (items, coll) => {
+      expect(items.length).toBe(1);
+      expect(items[0]).toBe("a");
+      expect(coll).toBe(a);
+    },
+  });
+  a.replaceAll(["b", "c", "d", "e"]);
+});

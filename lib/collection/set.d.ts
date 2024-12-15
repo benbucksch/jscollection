@@ -1,7 +1,7 @@
 import type { Collection } from '../api';
 
 declare class SetColl<Item> extends Collection<Item> {
-  constructor();
+  constructor(copyFrom?: Collection<Item> | Array<Item>);
   protected _addWithoutObserver(item: Item);
   protected _removeWithoutObserver(item: Item);
 
