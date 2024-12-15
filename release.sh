@@ -11,6 +11,8 @@ perl -p -i \
 git commit package.json -m "Version $VERSION"
 git tag -s "v$VERSION" -m $VERSION
 
+npm publish
+
 NEXTVERSION=`node -e "let v = process.argv[1].split('.'); let last = parseInt(v.pop()) + 1; console.log(v.join('.') + '.' + last);" $VERSION`-dev
 perl -p -i \
   -e "s|\"version\": \".*\"|\"version\": \"$NEXTVERSION\"|;" \
@@ -19,4 +21,3 @@ git commit package.json -m "Starting version $NEXTVERSION"
 
 git push
 git push --tags
-npm publish
