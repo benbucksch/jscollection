@@ -11,6 +11,8 @@ perl -p -i \
 git commit package.json -m "Version $VERSION"
 git tag -s "v$VERSION" -m $VERSION
 
+bash ./build-commonjs.sh
+
 npm publish
 
 NEXTVERSION=`node -e "let v = process.argv[1].split('.'); let last = parseInt(v.pop()) + 1; console.log(v.join('.') + '.' + last);" $VERSION`-dev
