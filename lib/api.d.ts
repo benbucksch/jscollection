@@ -148,11 +148,45 @@ declare class Collection<Item> {
    * Creates a new collection which contains only those items that meet a certain condition.
    * You define that condition by returning true from your `filterFunc`.
    *
-   * Once items are later added or removed from the source collections, they will also be added/removed accordingly to the result collection, as long as the collection lives.
+   * It's not observing the source collection. Use this for one-off calculations,
+   * where you don't keep the filtered result around.
    *
    * @param filterFunc A function that accepts up to three arguments. The filter method calls the `filterFunc` function one time for each element in the collection.
    */
-  filter(filterFunc: (item: Item) => boolean): FilteredCollection<Item>;
+  filterOnce(filterFunc: (item: Item) => boolean): ArrayColl<Item>;
+  /**
+   * Creates a new collection which contains only those items that meet a certain condition.
+   * You define that condition by returning true from your `filterFunc`.
+   *
+   * It's observable, i.e. if the source collection changed and `filterFunc` matches,
+   * items will be added and the observers called.
+   *
+   * It's also observing. It will observe all items.
+   * If their properties change and the item now matches or
+   * nor longer matches, it will be added to or removed from the filtered result.
+   *
+   * Implementation note:
+   * This works only 1 level deep, i.e. only direct properties of the added items
+   * are observed, not when the item references another item and the
+   * condition depends on that. This limitation should be lifted some time, so
+   * don't depend on this *not* working, either.
+   *
+   * @param filterFunc A function that accepts up to three arguments. The filter method calls the `filterFunc` function one time for each element in the collection.
+   */
+  filterObservable(filterFunc: (item: Item) => boolean): ObservableFilteredCollection<Item>;
+  /**
+   * Creates a new collection which contains only those items that meet a certain condition.
+   * You define that condition by returning true from your `filterFunc`.
+   *
+   * Once items are later added or removed from the source collections, they will also be added/removed accordingly to the result collection, as long as the collection lives.
+   *
+   * @deprecated
+   * However, if any of the items change their properties and are now
+   * matching or not matching anymore, the result will *not* change.
+   *
+   * @param filterFunc A function that accepts up to three arguments. The filter method calls the `filterFunc` function one time for each element in the collection.
+   */
+  filter(filterFunc: (item: Item) => boolean): ShallowFilteredCollection<Item>;
   /**
    * Creates a new collection which contains other objects that are derived from the items in this collection.
    * You create them with the return value of your `mapFunc`.
