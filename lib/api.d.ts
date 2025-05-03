@@ -1,4 +1,4 @@
-import type { FilteredCollection } from './operator/filter';
+import type { FilteredCollection, ObservableFilteredCollection } from './operator/filter';
 import type { MapToCollection } from './operator/mapTo';
 import type { SortedCollection } from './operator/sort';
 import type { AdditionCollection } from './operator/add-merge';
@@ -153,7 +153,7 @@ declare class Collection<Item> {
    *
    * @param filterFunc A function that accepts up to three arguments. The filter method calls the `filterFunc` function one time for each element in the collection.
    */
-  filterOnce(filterFunc: (item: Item) => boolean): ArrayColl<Item>;
+  filterOnce(filterFunc: (item: Item) => boolean): Collection<Item>;
   /**
    * Creates a new collection which contains only those items that meet a certain condition.
    * You define that condition by returning true from your `filterFunc`.
@@ -186,7 +186,7 @@ declare class Collection<Item> {
    *
    * @param filterFunc A function that accepts up to three arguments. The filter method calls the `filterFunc` function one time for each element in the collection.
    */
-  filter(filterFunc: (item: Item) => boolean): ShallowFilteredCollection<Item>;
+  filter(filterFunc: (item: Item) => boolean): FilteredCollection<Item>;
   /**
    * Creates a new collection which contains other objects that are derived from the items in this collection.
    * You create them with the return value of your `mapFunc`.
