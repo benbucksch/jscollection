@@ -5,6 +5,7 @@ import type { AdditionCollection } from './operator/add-merge';
 import type { AdditionCollectionWithDups } from './operator/add-concat';
 import type { SubtractCollection } from './operator/subtract';
 import type { IntersectionCollection } from './operator/intersection';
+import type { SetColl } from './collection/set';
 
 declare class Collection<Item> {
   constructor();
@@ -228,6 +229,17 @@ declare class Collection<Item> {
    * @param valueFn Function used to get the property to compare.
    */
   sortBy(valueFn: (o: Item) => any): SortedCollection<Item>;
+  /**
+   * Creates a new collection which contains other objects that are derived from the items in this collection.
+   * You create them with the return value of your `mapFunc`.
+   *
+   * Calls the `mapFunc` callback function on each element of the collection, and returns a new observable collection that contains the results.
+   *
+   * Once items are later added or removed from the source collections, they will also be added/removed accordingly to the result collection, as long as the collection lives.
+   *
+   * @param callbackfn A function that accepts up to three arguments. The map method calls the callbackfn function one time for each element in the array.
+   */
+  unique(equalFunc: (a: Item, b: Item) => boolean = null): SetColl<Item>;
   /**
   * operator +
   * Combines two collections, by appending the another colleciton.

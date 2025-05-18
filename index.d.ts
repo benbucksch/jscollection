@@ -6,6 +6,7 @@ export * from "./lib/operator/filter";
 export * from "./lib/operator/mapTo";
 export * from "./lib/operator/transform";
 export * from "./lib/operator/sort";
+export * from "./lib/operator/unique";
 export * from "./lib/operator/intersection";
 export * from "./lib/operator/notInCommon";
 export * from "./lib/collection/array";
