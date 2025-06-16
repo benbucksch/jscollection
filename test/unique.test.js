@@ -61,3 +61,40 @@ test('unique with equal function', () => {
   expect(removed.contents).toMatchObject([d]);
   expect(added.contents).toMatchObject([e]);
 });
+
+
+test('unique: not null', () => {
+  let b = { id: "b" };
+  let c = null;
+  let d = undefined;
+  let a = new ArrayColl([b, c, d]);
+  function equal(a, b) {
+    return a?.id == b?.id;
+  }
+
+  let unique = a.unique();
+  let uniqueWithEqual = a.unique(equal);
+  expect(unique.contents).toMatchObject([b]);
+  expect(uniqueWithEqual.contents).toMatchObject([b]);
+
+  let added = new ArrayColl();
+  let removed = new ArrayColl();
+  unique.registerObserver({
+    added: (items, coll) => {
+      added.addAll(items);
+    },
+    removed: (items, coll) => {
+      removed.addAll(items);
+    },
+  });
+
+  a.add(null);
+  a.add(undefined);
+  a.add(0);
+  a.remove(null);
+  a.remove(undefined);
+
+  expect(unique.contents).toMatchObject([b, 0]);
+  expect(removed.contents).toMatchObject([]);
+  expect(added.contents).toMatchObject([0]);
+});
