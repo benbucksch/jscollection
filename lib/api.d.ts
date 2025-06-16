@@ -270,6 +270,21 @@ declare class Collection<Item> {
    */
   merge(otherColl: Collection<Item>): AdditionCollection<Item>;
 
+  /**
+   * For each item in `source`, returns multiple items defined by `mapFunc()`.
+   * This works like Array.flatMap(), but observes both the source collection and
+   * the map result for additions/removals.
+   *
+   * It's observable, i.e. if `source` changed,
+   * mapped items will be added and the observers called.
+   * Additionally, the result of the map function is a collection that
+   * will also be observed for additionals/removals.
+   *
+   * @param mapFunc {Function(item)}
+   *     The results will be included in the FlatMap
+   */
+  flatMap(mapFunc: (item: Item, i: number) => Collection<Result>): Collection<Result>;
+
   // Recollections API
   /**
    * operator -

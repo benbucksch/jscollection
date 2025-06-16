@@ -318,31 +318,31 @@ test('Array flat', () => {
   a.set(3, newArray().contents);
   let array = a.contents;
   let result = a.flat();
-  let resultArray = array.flat(2);
-  expect(result.contents).toMatchObject(resultArray);
+  let should = array.flat(2);
+  expect(result.contents).toMatchObject(should);
 });
 
 test('Array flatMap', () => {
-  let a = newArray();
-  a.set(3, newArray().contents);
+  let a = new ArrayColl();
+  a.set(3, { ideas: newArray() });
   let array = a.contents;
-  let result = a.flatMap(item => item);
-  let resultArray = array.flatMap(item => item);
-  expect(result.contents).toMatchObject(resultArray);
+  let result = a.flatMap(item => item?.ideas);
+  let should = array.flatMap(item => item?.ideas.contents);
+  expect(result.contents).toMatchObject(should);
 });
 
 test('Array reduce', () => {
   let a = newArray();
   let array = a.contents;
   let result = a.reduce((prev, item) => prev + ", " + item, "start");
-  let resultArray = array.reduce((prev, item) => prev + ", " + item, "start");
-  expect(result).toEqual(resultArray);
+  let should = array.reduce((prev, item) => prev + ", " + item, "start");
+  expect(result).toEqual(should);
 });
 
 test('Array reduceRight', () => {
   let a = newArray();
   let array = a.contents;
   let result = a.reduceRight((prev, item) => prev + ", " + item, "start");
-  let resultArray = array.reduceRight((prev, item) => prev + ", " + item, "start");
-  expect(result).toEqual(resultArray);
+  let should = array.reduceRight((prev, item) => prev + ", " + item, "start");
+  expect(result).toEqual(should);
 });

@@ -190,17 +190,6 @@ declare class ArrayColl<Item> extends KeyValueCollection<number, Item> {
    */
   flat(): ArrayColl<unknown>;
   /**
-   * Calls the `mapFunc` callback function on each element of the collection.
-   * Then, flattens the result into a new array.
-   * This is identical to a map followed by flat with depth 1.
-   *
-   * Once items are later added or removed from the source collections, they will also be added/removed accordingly to the result collection, as long as the collection lives.
-   *
-   * @param mapFunc A function that accepts up to three arguments. The flatMap method calls the
-   * callback function one time for each element in the collection.
-   */
-  flatMap<Result>(mapFunc: (value: Item, index: number) => Result | Array<Result>): ArrayColl<Result>;
-  /**
    * Determines whether the collection includes a certain item.
    * @param searchElement The item to search for.
    * @param fromIndex The position in this array at which to begin searching for searchElement.
