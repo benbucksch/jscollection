@@ -131,6 +131,24 @@ test('filterWritable() non-observable objects', () => {
   expect(filtered.contents).toMatchObject([itemD]);
   expect(a.contents).toMatchObject([itemB, itemC, itemD]);
 
+  let itemF = { valid: true };
+  a.add(itemF);
+  expect(filtered.contents).toMatchObject([itemD, itemF]);
+  expect(a.contents).toMatchObject([itemB, itemC, itemD, itemF]);
+
+  a.remove(itemF);
+  expect(filtered.contents).toMatchObject([itemD]);
+  expect(a.contents).toMatchObject([itemB, itemC, itemD]);
+
+  let itemG = { valid: false };
+  a.add(itemG);
+  expect(filtered.contents).toMatchObject([itemD]);
+  expect(a.contents).toMatchObject([itemB, itemC, itemD, itemG]);
+
+  a.remove(itemG);
+  expect(filtered.contents).toMatchObject([itemD]);
+  expect(a.contents).toMatchObject([itemB, itemC, itemD]);
+
   itemB.valid = true;
   expect(filtered.contents).toMatchObject([itemD]);
   expect(a.contents).toMatchObject([itemB, itemC, itemD]);
@@ -171,6 +189,24 @@ test('filterWritable() observable objects', () => {
   expect(filtered.contents).toMatchObject([itemD]);
   expect(a.contents).toMatchObject([itemB, itemC, itemD]);
 
+  let itemF = new Leaf(true);
+  a.add(itemF);
+  expect(filtered.contents).toMatchObject([itemD, itemF]);
+  expect(a.contents).toMatchObject([itemB, itemC, itemD, itemF]);
+
+  a.remove(itemF);
+  expect(filtered.contents).toMatchObject([itemD]);
+  expect(a.contents).toMatchObject([itemB, itemC, itemD]);
+
+  let itemG = new Leaf(false);
+  a.add(itemG);
+  expect(filtered.contents).toMatchObject([itemD]);
+  expect(a.contents).toMatchObject([itemB, itemC, itemD, itemG]);
+
+  a.remove(itemG);
+  expect(filtered.contents).toMatchObject([itemD]);
+  expect(a.contents).toMatchObject([itemB, itemC, itemD]);
+
   itemB.valid = true;
   expect(filtered.length).toBe(2);
   expect(a.length).toBe(3);
@@ -179,8 +215,8 @@ test('filterWritable() observable objects', () => {
   expect(filtered.length).toBe(1);
   expect(a.length).toBe(2);
 
-  expect(added.length).toBe(2);
-  expect(removed.length).toBe(2);
+  expect(added.length).toBe(3);
+  expect(removed.length).toBe(3);
 });
 
 test('filter() (deprecated API) non-observable objects', () => {
