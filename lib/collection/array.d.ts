@@ -140,6 +140,7 @@ declare class ArrayColl<Item> extends KeyValueCollection<number, Item> {
    * order, until it finds one where `filterFunc` returns true. If such an element is found, find
    * immediately returns that element valuehttps://github.com/microsoft/TypeScript/blob/main/src/lib/es2016.array.include.d.tsOtherwise, find returns undefined.
    */
+  find<T extends Item>(filterFunc: (item: Item) => item is T): T; // Type guard version to allow TypeScript to narrow the type of the result
   find(filterFunc: (item: Item) => boolean): Item;
   /**
    * Returns the index of the first element in the collection where `filterFunc` is true,

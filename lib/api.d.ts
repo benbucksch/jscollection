@@ -144,6 +144,7 @@ declare class Collection<Item> {
    * order, until it finds one where `filterFunc` returns true. If such an element is found, find
    * immediately returns that element value. Otherwise, find returns undefined.
    */
+  find<T extends Item>(filterFunc: (item: Item) => item is T): T; // Type guard version to allow TypeScript to narrow the type of the result
   find(filterFunc: (item: Item) => boolean): Item;
   /**
    * Creates a new collection which contains only those items that meet a certain condition.
@@ -154,6 +155,7 @@ declare class Collection<Item> {
    *
    * @param filterFunc A function that accepts up to three arguments. The filter method calls the `filterFunc` function one time for each element in the collection.
    */
+  filterOnce<T extends Item>(filterFunc: (item: Item) => item is T): Collection<T>; // Type guard version to allow TypeScript to narrow the type of the result
   filterOnce(filterFunc: (item: Item) => boolean): Collection<Item>;
   /**
    * Creates a new collection which contains only those items that meet a certain condition.
@@ -174,6 +176,7 @@ declare class Collection<Item> {
    *
    * @param filterFunc A function that accepts up to three arguments. The filter method calls the `filterFunc` function one time for each element in the collection.
    */
+  filterObservable<T extends Item>(filterFunc: (item: Item) => item is T): ObservableFilteredCollection<T>; // Type guard version to allow TypeScript to narrow the type of the result
   filterObservable(filterFunc: (item: Item) => boolean): ObservableFilteredCollection<Item>;
   /**
    * Returns a subset of the source collection.
@@ -204,6 +207,7 @@ declare class Collection<Item> {
    *
    * @param filterFunc A function that accepts up to three arguments. The filter method calls the `filterFunc` function one time for each element in the collection.
    */
+  filter<T extends Item>(filterFunc: (item: Item) => item is T): FilteredCollection<T>; // Type guard version to allow TypeScript to narrow the type of the result
   filter(filterFunc: (item: Item) => boolean): FilteredCollection<Item>;
   /**
    * Creates a new collection which contains other objects that are derived from the items in this collection.
